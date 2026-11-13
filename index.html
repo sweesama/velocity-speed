@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/flight-icon.svg" />
+    <link rel="apple-touch-icon" href="/flight-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Bilingual High-Intent SEO Title & Meta Description -->
+    <title>Velocity — Online GPS Speedometer, Altimeter & HUD | 实时飞机高铁测速与海拔仪</title>
+    <meta
+      name="description"
+      content="Free offline-ready GPS speedometer, geometric altimeter & windshield HUD. Measure real-time speed in km/h, mph, and knots on airplanes (Airplane Mode), bullet trains, cars, and cycling. 支持飞行模式离线测速的极简实时速度表、万米海拔仪与测速证书生成工具。"
+    />
+    <meta
+      name="keywords"
+      content="GPS speedometer online, airplane speedometer, flight speed test, train speed test, online altimeter, windshield HUD, 实时测速, 飞机测速, 高铁测速, 手机码表, 海拔高度计, 车载HUD"
+    />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Social Sharing Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Velocity — Real-Time GPS Speedometer, Altimeter & Speed Card" />
+    <meta
+      property="og:description"
+      content="Measure live speed & altitude on flights, bullet trains, and road trips. Works 100% offline in Airplane Mode."
+    />
+    <meta property="og:image" content="/flight-icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Velocity — Real-Time GPS Speedometer & Altimeter" />
+    <meta
+      name="twitter:description"
+      content="Minimalist GPS speedometer, geometric altimeter & windshield HUD. Works offline in Airplane Mode."
+    />
+
+    <!-- Google Schema.org WebApplication Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Velocity GPS Speedometer & Altimeter",
+        "alternateName": "Velocity 实时测速与海拔仪",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS, Android, Web",
+        "browserRequirements": "Requires HTML5 Geolocation",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Real-time GPS speedometer, geometric altimeter, and windshield HUD that works offline in Airplane Mode for flights, high-speed trains, driving, and cycling."
+      }
+    </script>
+
+    <!-- 引入几何无衬线与精密仪器等宽字体 (联网时提升字体雕刻感，断网时由 Service Worker 缓存或回退 SF Pro) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@100;200;300;400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen overflow-x-hidden bg-black text-white antialiased">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

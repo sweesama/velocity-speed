@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#16161a"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+    <linearGradient id="arcGrad" x1="96" y1="384" x2="416" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#bgGrad)"/>
+  <rect x="8" y="8" width="496" height="496" rx="108" stroke="#ffffff" stroke-opacity="0.1" stroke-width="4"/>
+  <!-- Outer subtle instrument bezel -->
+  <circle cx="256" cy="264" r="168" stroke="#ffffff" stroke-opacity="0.1" stroke-width="6"/>
+  <!-- Active monochrome platinum velocity arc -->
+  <path d="M 137.2 382.8 A 168 168 0 1 1 374.8 382.8" stroke="url(#arcGrad)" stroke-width="18" stroke-linecap="round"/>
+  <!-- Precision needle -->
+  <line x1="256" y1="264" x2="348" y2="164" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="256" cy="264" r="22" fill="#ffffff"/>
+  <circle cx="256" cy="264" r="9" fill="#050507"/>
+</svg>
