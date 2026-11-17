@@ -124,21 +124,29 @@
             {{ errorMsg }}
           </p>
 
-          <!-- 内测期一键申领按钮 -->
+          <!-- 经过验证的增长飞轮按钮: 分享裂变解锁 (或凭社媒评论区暗号 BETA100 解锁) -->
           <button
             type="button"
-            @click="claimFounderPass"
+            @click="shareToUnlock"
             class="w-full py-3 px-4 rounded-xl bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.14] text-white font-medium text-xs btn-spring cursor-pointer flex items-center justify-center space-x-1.5 whitespace-nowrap"
           >
-            <Sparkles class="w-3.5 h-3.5 stroke-[1.8]" />
+            <Share2 class="w-3.5 h-3.5 stroke-[1.8]" />
             <span>
               {{
                 lang === 'en'
-                  ? 'Claim Founding Beta Pass (Code: BETA100)'
-                  : '一键申领「首批创始内测官席位」(BETA100)'
+                  ? 'Share with a Friend to Unlock Free Pass'
+                  : '分享给 1 位好友 · 立即免费解锁内测席位'
               }}
             </span>
           </button>
+
+          <p class="text-[10.5px] text-zinc-500 text-center pt-0.5 whitespace-nowrap">
+            {{
+              lang === 'en'
+                ? 'Or comment on our launch post to get an exclusive invite code'
+                : '或在小红书/社媒首发帖评论区留言获取专属一客一码'
+            }}
+          </p>
         </div>
       </template>
     </div>
@@ -151,7 +159,7 @@ import confetti from 'canvas-confetti'
 import type { AppLanguage } from '../types'
 import { verifyProLicenseCode, generateBatchLicenseKeys } from '../services/proLicense'
 import { playTactileTick } from '../services/audioCallouts'
-import { X, Sparkles, Camera, Award, ShieldCheck } from 'lucide-vue-next'
+import { X, Sparkles, Camera, Award, ShieldCheck, Share2 } from 'lucide-vue-next'
 
 const props = defineProps<{
   lang: AppLanguage
@@ -235,8 +243,8 @@ function handleRedeem() {
   if (!res.valid) {
     errorMsg.value =
       props.lang === 'en'
-        ? 'Invalid code. Try Founding Beta code: BETA100'
-        : '邀请码无效，可点击下方按钮直接申领内测席位 BETA100'
+        ? 'Invalid code. Share below or use code from our launch post.'
+        : '邀请码无效，可点击下方分享给好友立即免费解锁'
     return
   }
   errorMsg.value = ''
@@ -244,12 +252,37 @@ function handleRedeem() {
   emit('unlocked', `${res.normalizedCode} · ${res.founderNumber}`)
 }
 
-function claimFounderPass() {
+async function shareToUnlock() {
   playTactileTick(true)
-  inputCode.value = 'BETA100'
-  const res = verifyProLicenseCode('BETA100')
+  const shareUrl = window.location.origin || 'https://velocity-speed.pages.dev'
+  const shareTitle = 'Velocity — 极简实时测速与万米高空海拔仪'
+  const shareText =
+    props.lang === 'en'
+      ? `Check out Velocity — a minimalist GPS speedometer & altimeter that works offline in Airplane Mode: ${shareUrl}`
+      : `发现一个超酷的徕卡风实时测速与万米海拔仪 Velocity，坐飞机开飞行模式也能测出 900km/h，还能生成实景测速证书：${shareUrl}`
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: shareUrl
+      })
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(shareText)
+    }
+  } catch {
+    // 用户取消系统分享面板时也允许复制口令解锁
+    try {
+      await navigator.clipboard?.writeText(shareText)
+    } catch {
+      // ignore
+    }
+  }
+
+  const res = verifyProLicenseCode('FOUNDER')
   errorMsg.value = ''
   fireLuxuryConfetti()
-  emit('unlocked', `BETA100 · ${res.founderNumber}`)
+  emit('unlocked', `SHARED · ${res.founderNumber}`)
 }
 </script>
