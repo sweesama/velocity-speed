@@ -181,6 +181,58 @@
         </div>
       </div>
     </div>
+
+    <!-- 微信/iOS/小红书全兼容海报长按保存与原生分享弹窗 (解决微信内置浏览器拦截 <a download> 无法存相册的痛点) -->
+    <Transition name="modal">
+      <div
+        v-if="exportedImageUrl"
+        class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-5 select-none"
+        @click.self="exportedImageUrl = null"
+      >
+        <div class="w-full max-w-[330px] flex flex-col items-center animate-fade-in">
+          <div class="w-full flex items-center justify-between mb-2.5 px-1">
+            <span class="text-xs font-medium text-zinc-200">
+              {{
+                settings.language === 'en'
+                  ? 'Long-press image to save to Photos'
+                  : '手机请「长按下方海报」保存至系统相册'
+              }}
+            </span>
+            <button
+              type="button"
+              @click="exportedImageUrl = null"
+              class="p-1 rounded-full bg-white/10 text-zinc-300 hover:text-white btn-spring cursor-pointer"
+            >
+              <X class="w-4 h-4" />
+            </button>
+          </div>
+
+          <img
+            :src="exportedImageUrl"
+            alt="Velocity Speed Card"
+            class="w-full rounded-[22px] border border-white/15 shadow-2xl select-auto pointer-events-auto"
+          />
+
+          <div class="w-full flex gap-2 mt-3.5">
+            <button
+              type="button"
+              @click="shareExportedImage"
+              class="flex-1 py-2.5 rounded-xl bg-white text-black font-semibold text-xs hover:bg-zinc-200 btn-spring cursor-pointer flex items-center justify-center space-x-1.5"
+            >
+              <Share2 class="w-3.5 h-3.5 stroke-[2]" />
+              <span>{{ settings.language === 'en' ? 'Share Image' : '调用系统分享' }}</span>
+            </button>
+            <button
+              type="button"
+              @click="exportedImageUrl = null"
+              class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium btn-spring cursor-pointer"
+            >
+              {{ settings.language === 'en' ? 'Done' : '完成' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -195,7 +247,7 @@ import {
 } from '../services/unitConverters'
 import { useI18n, getSpeedViralInsight } from '../services/i18n'
 import { playTactileTick } from '../services/audioCallouts'
-import { Camera, Download, RefreshCw } from 'lucide-vue-next'
+import { Camera, Download, RefreshCw, Share2, X } from 'lucide-vue-next'
 
 const props = defineProps<{
   telemetry: TelemetryData
@@ -213,6 +265,7 @@ const emit = defineEmits<{
 const t = computed(() => useI18n(props.settings.language))
 
 const isExporting = ref(false)
+const exportedImageUrl = ref<string | null>(null)
 const currentStyle = ref<'dark' | 'glass' | 'cyber'>('dark')
 const customTag = ref('')
 const quoteVariant = ref(0)
@@ -630,20 +683,31 @@ async function exportPoster() {
       }
     })
 
-    // 6. 底部极简时间戳与署名
+    // 6. 底部极简时间戳与署名 (免费版带低饱和品牌识别，内测 Pro 版为纯净 VELOCITY 刻印)
     ctx.textAlign = 'left'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
     ctx.font = '500 21px "JetBrains Mono", -apple-system, monospace'
     ctx.fillText(dateString.value, 110, 1232)
 
     ctx.textAlign = 'right'
-    ctx.fillText('VELOCITY', width - 110, 1232)
+    const footerRight = props.settings.isProUnlocked
+      ? 'VELOCITY'
+      : props.settings.language === 'en'
+        ? 'VELOCITY · LIVE GPS'
+        : 'VELOCITY · 实时测速仪'
+    ctx.fillText(footerRight, width - 110, 1232)
 
     const dataUrl = canvas.toDataURL('image/png')
-    const link = document.createElement('a')
-    link.download = `Velocity_Card_${Date.now()}.png`
-    link.href = dataUrl
-    link.click()
+    exportedImageUrl.value = dataUrl
+
+    // 桌面浏览器同时自动触发文件下载，手机端通过弹窗支持微信/iOS长按保存至系统相册
+    const isMobile = /iPhone|iPad|iPod|Android|MicroMessenger/i.test(navigator.userAgent || '')
+    if (!isMobile) {
+      const link = document.createElement('a')
+      link.download = `Velocity_Card_${Date.now()}.png`
+      link.href = dataUrl
+      link.click()
+    }
     emit('notify', t.value.toastPosterSaved)
   } catch (e) {
     console.error('Export error:', e)
@@ -651,5 +715,29 @@ async function exportPoster() {
   } finally {
     isExporting.value = false
   }
+}
+
+async function shareExportedImage() {
+  if (!exportedImageUrl.value) return
+  playTactileTick(props.settings.hapticFeedback)
+  try {
+    const res = await fetch(exportedImageUrl.value)
+    const blob = await res.blob()
+    const file = new File([blob], `Velocity_${Date.now()}.png`, { type: 'image/png' })
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'Velocity Speed Card',
+        files: [file]
+      })
+      emit('notify', t.value.toastPosterShared)
+      return
+    }
+  } catch {
+    // ignore share cancel
+  }
+  const link = document.createElement('a')
+  link.download = `Velocity_Card_${Date.now()}.png`
+  link.href = exportedImageUrl.value
+  link.click()
 }
 </script>
