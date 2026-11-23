@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen h-dvh-screen bg-[#070709] text-white flex flex-col justify-center items-center overflow-hidden selection:bg-white selection:text-black font-sans">
+  <div
+    class="min-h-screen bg-[#070709] text-white flex flex-col justify-center items-center selection:bg-white selection:text-black font-sans"
+    :class="settings.showDeviceFrame && devicePreset !== 'fullscreen' ? 'md:py-4 overflow-y-auto overflow-x-hidden' : 'h-dvh-screen overflow-hidden'"
+  >
     <!-- 电脑端展示与双语/多机型/宣传图快捷控制栏 (仅在宽屏桌面浏览器显示，真机自动隐藏) -->
     <div class="hidden md:flex fixed top-3 right-4 z-50 items-center space-x-1.5 bg-[#16161a]/90 backdrop-blur-xl border border-white/10 px-2.5 py-1.5 rounded-full text-xs text-zinc-400 shadow-lg">
       <!-- 1. 宣传物料工坊入口 -->
@@ -212,17 +215,17 @@ const deviceContainerClass = computed(() => {
     return 'max-w-xl h-dvh-screen pt-2 safe-top'
   }
   const baseFrame =
-    'h-dvh-screen md:my-3 md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
+    'w-full max-md:h-dvh-screen shrink-0 md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
   switch (devicePreset.value) {
     case 'foldduo':
-      return `${baseFrame} max-w-2xl md:max-w-[660px] md:h-[830px] md:rounded-[36px]`
+      return `${baseFrame} md:w-[640px] md:h-[800px] md:rounded-[38px]`
     case 'iphonese':
-      return `${baseFrame} max-w-md md:max-w-[375px] md:h-[680px] md:rounded-[44px]`
+      return `${baseFrame} md:w-[360px] md:h-[680px] md:rounded-[44px]`
     case 'android':
-      return `${baseFrame} max-w-md md:max-w-[412px] md:h-[880px] md:rounded-[38px]`
+      return `${baseFrame} md:w-[396px] md:h-[856px] md:rounded-[38px]`
     case 'iphone16':
     default:
-      return `${baseFrame} max-w-md md:max-w-[400px] md:h-[844px] md:rounded-[52px]`
+      return `${baseFrame} md:w-[388px] md:h-[828px] md:rounded-[52px]`
   }
 })
 
