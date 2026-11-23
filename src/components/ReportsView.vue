@@ -118,10 +118,10 @@
           {{ demoScenario ? demoScenario.label : t.certPeakTitle }}
         </button>
 
-        <!-- 光学居中大数字 (点击数字可预览不同速度段位证书，位数自适应字号) -->
+        <!-- 光学居中大数字 (点击数字可预览不同速度段位证书，位数自适应字号 + 小屏紧凑自适应) -->
         <div
           @click="cycleDemoScenario"
-          class="relative inline-flex items-baseline justify-center hero-numeral cursor-pointer active:scale-95 transition-transform duration-150"
+          class="relative inline-flex items-baseline justify-center hero-numeral compact-scale-numeral cursor-pointer active:scale-95 transition-transform duration-150"
           :title="settings.language === 'en' ? 'Tap to preview speed tiers' : '点击可预览不同速度段位证书'"
         >
           <span
@@ -138,7 +138,7 @@
         <!-- 走心社交文案区 (遵循手工级语义断行 \n + 丝滑淡入淡出动效，绝不拆碎词语或产生单字孤行) -->
         <div
           @click="shuffleQuote"
-          class="mt-7 w-full px-1 mx-auto cursor-pointer group transition-opacity hover:opacity-90 min-h-[88px] flex flex-col justify-center"
+          class="mt-4 sm:mt-6 w-full px-1 mx-auto cursor-pointer group transition-opacity hover:opacity-90 min-h-[82px] flex flex-col justify-center"
         >
           <Transition name="quote" mode="out-in">
             <div :key="`${quoteVariant}-${demoIndex}-${settings.language}`">

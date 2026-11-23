@@ -136,8 +136,21 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 现代全面屏安全区适配 */
+/* 现代全面屏安全区与动态视口高度 (100dvh) 适配 - 彻底解决 iOS Safari / Android Chrome / 微信底部工具栏遮挡 TabBar */
+.h-dvh-screen {
+  height: 100vh;
+  height: 100dvh;
+}
+
 @supports (padding: max(0px)) {
-  .safe-top { padding-top: max(env(safe-area-inset-top, 0px), 16px); }
-  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom, 0px), 14px); }
+  .safe-top { padding-top: max(env(safe-area-inset-top, 0px), 12px); }
+  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px); }
+}
+
+/* 针对小屏手机 (iPhone SE / 13 mini / 紧凑型安卓屏 < 700px 高度) 的自适应紧凑缩放 */
+@media (max-height: 700px) {
+  .compact-scale-numeral {
+    transform: scale(0.88);
+    transform-origin: center center;
+  }
 }

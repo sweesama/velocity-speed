@@ -68,6 +68,15 @@
 
         <button
           type="button"
+          @click="$emit('openPromoStudio')"
+          class="mt-2 w-full py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-xs font-medium text-white btn-spring cursor-pointer flex items-center justify-center space-x-1.5"
+        >
+          <Sparkles class="w-3.5 h-3.5 stroke-[1.8]" />
+          <span>打开小红书 4 张 3:4 宣传套图与文案工坊</span>
+        </button>
+
+        <button
+          type="button"
           @click="showAdminGenerator = false"
           class="mt-2.5 text-[11px] text-zinc-500 hover:text-zinc-300 cursor-pointer"
         >
@@ -169,6 +178,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'unlocked', code: string): void
+  (e: 'openPromoStudio'): void
 }>()
 
 const inputCode = ref(props.currentCode || '')

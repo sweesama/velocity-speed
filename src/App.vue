@@ -1,37 +1,45 @@
 <template>
-  <div class="min-h-screen bg-[#070709] text-white flex flex-col justify-center items-center overflow-x-hidden selection:bg-white selection:text-black font-sans">
-    <!-- 电脑端展示与双语快捷控制栏 (仅在宽屏桌面浏览器显示，真机自动隐藏) -->
-    <div class="hidden md:flex fixed top-3 right-4 z-50 items-center space-x-2 bg-[#16161a]/90 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-full text-xs text-zinc-400 shadow-lg">
-      <!-- 中英双语一键切换 -->
+  <div class="min-h-screen h-dvh-screen bg-[#070709] text-white flex flex-col justify-center items-center overflow-hidden selection:bg-white selection:text-black font-sans">
+    <!-- 电脑端展示与双语/多机型/宣传图快捷控制栏 (仅在宽屏桌面浏览器显示，真机自动隐藏) -->
+    <div class="hidden md:flex fixed top-3 right-4 z-50 items-center space-x-1.5 bg-[#16161a]/90 backdrop-blur-xl border border-white/10 px-2.5 py-1.5 rounded-full text-xs text-zinc-400 shadow-lg">
+      <!-- 1. 宣传物料工坊入口 -->
       <button
         type="button"
-        @click="toggleLanguage"
-        class="px-2.5 py-1 rounded-full bg-white/[0.07] hover:bg-white/15 text-white font-mono text-[11px] font-medium transition cursor-pointer whitespace-nowrap"
+        @click="showPromoStudio = true"
+        class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-white text-black font-semibold text-[11px] hover:bg-zinc-200 btn-spring cursor-pointer whitespace-nowrap"
       >
-        {{ settings.language === 'zh' ? 'EN / 中文' : '中文 / EN' }}
+        <Sparkles class="w-3 h-3 stroke-[2.2]" />
+        <span>{{ settings.language === 'zh' ? '宣传图工坊' : 'Promo Kit' }}</span>
       </button>
 
       <span class="text-white/15">|</span>
 
+      <!-- 2. 主流手机机型尺寸适配预览切换 (iPhone 16 Pro / 小屏 SE / Android 旗舰 / 全屏) -->
       <button
         type="button"
-        @click="updateSettings({ showDeviceFrame: !settings.showDeviceFrame })"
-        class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full font-medium transition cursor-pointer whitespace-nowrap"
-        :class="settings.showDeviceFrame ? 'bg-white text-black shadow-sm' : 'hover:text-white'"
+        @click="cycleDevicePreset"
+        class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-white/[0.07] hover:bg-white/15 text-white font-medium text-[11px] btn-spring cursor-pointer whitespace-nowrap"
       >
         <component :is="settings.showDeviceFrame ? Smartphone : Monitor" class="w-3.5 h-3.5" />
-        <span>{{ settings.showDeviceFrame ? t.iphoneMockup : t.immersiveFullscreen }}</span>
+        <span>{{ currentDevicePresetLabel }}</span>
+      </button>
+
+      <span class="text-white/15">|</span>
+
+      <!-- 3. 中英双语一键切换 -->
+      <button
+        type="button"
+        @click="toggleLanguage"
+        class="px-2.5 py-1 rounded-full bg-white/[0.07] hover:bg-white/15 text-white font-mono text-[11px] font-medium btn-spring cursor-pointer whitespace-nowrap"
+      >
+        {{ settings.language === 'zh' ? 'EN / 中文' : '中文 / EN' }}
       </button>
     </div>
 
-    <!-- 主容器: 桌面样机模式下呈现 iPhone 16 Pro 钛金属外框，真机与全屏模式下满屏自适应 -->
+    <!-- 主容器: 真机采用 100dvh 动态视口高度完美避开浏览器底栏，桌面支持多主流机型尺寸实时预览 -->
     <div
       class="w-full flex flex-col justify-between transition-all duration-300 relative bg-black overflow-hidden"
-      :class="[
-        settings.showDeviceFrame
-          ? 'max-w-md h-screen md:max-w-[400px] md:h-[844px] md:my-4 md:rounded-[52px] md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
-          : 'max-w-lg h-screen pt-2 safe-top'
-      ]"
+      :class="deviceContainerClass"
     >
       <!-- iOS 模拟状态栏 (仅在桌面端开启 iPhone 样机框时渲染，真机上绝不重复显示假状态栏) -->
       <IosStatusBar v-if="settings.showDeviceFrame" class="hidden md:flex shrink-0" :showDynamicIsland="true" />
@@ -119,6 +127,15 @@
         :currentCode="settings.proLicenseCode"
         @close="showProModal = false"
         @unlocked="handleProUnlocked"
+        @openPromoStudio="showProModal = false; showPromoStudio = true"
+      />
+    </Transition>
+
+    <!-- 小红书 / 社媒 3:4 爆款宣传图与文案工坊 -->
+    <Transition name="modal">
+      <PromoStudioModal
+        v-if="showPromoStudio"
+        @close="showPromoStudio = false"
       />
     </Transition>
 
@@ -151,15 +168,59 @@ import HudMode from './components/HudMode.vue'
 import IosStatusBar from './components/IosStatusBar.vue'
 import PermissionSheet from './components/PermissionSheet.vue'
 import ProPassModal from './components/ProPassModal.vue'
-import { Smartphone, Monitor } from 'lucide-vue-next'
+import PromoStudioModal from './components/PromoStudioModal.vue'
+import { Smartphone, Monitor, Sparkles } from 'lucide-vue-next'
 
 const currentTab = ref<AppTab>('dashboard')
 const isHudActive = ref(false)
 const showPermissionModal = ref(false)
 const showProModal = ref(false)
+const showPromoStudio = ref(false)
 const promptDismissed = ref(false)
 const toastMessage = ref<string | null>(null)
 let toastTimer: number | null = null
+
+type DevicePreset = 'iphone16' | 'iphonese' | 'android' | 'fullscreen'
+const devicePreset = ref<DevicePreset>('iphone16')
+
+function cycleDevicePreset() {
+  playTactileTick(settings.hapticFeedback)
+  const order: DevicePreset[] = ['iphone16', 'android', 'iphonese', 'fullscreen']
+  const next = order[(order.indexOf(devicePreset.value) + 1) % order.length]
+  devicePreset.value = next
+  updateSettings({ showDeviceFrame: next !== 'fullscreen' })
+}
+
+const currentDevicePresetLabel = computed(() => {
+  const isEn = settings.language === 'en'
+  switch (devicePreset.value) {
+    case 'iphone16':
+      return isEn ? 'iPhone 16 Pro' : 'iPhone 16 Pro'
+    case 'android':
+      return isEn ? 'Android Ultra' : '安卓旗舰屏'
+    case 'iphonese':
+      return isEn ? 'Compact SE' : '小屏紧凑机型'
+    case 'fullscreen':
+      return isEn ? 'Full Screen' : '全屏沉浸'
+  }
+})
+
+const deviceContainerClass = computed(() => {
+  if (!settings.showDeviceFrame || devicePreset.value === 'fullscreen') {
+    return 'max-w-lg h-dvh-screen pt-2 safe-top'
+  }
+  const baseFrame =
+    'max-w-md h-dvh-screen md:my-3 md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
+  switch (devicePreset.value) {
+    case 'iphonese':
+      return `${baseFrame} md:max-w-[375px] md:h-[680px] md:rounded-[44px]`
+    case 'android':
+      return `${baseFrame} md:max-w-[412px] md:h-[880px] md:rounded-[38px]`
+    case 'iphone16':
+    default:
+      return `${baseFrame} md:max-w-[400px] md:h-[844px] md:rounded-[52px]`
+  }
+})
 
 function showToast(msg: string) {
   toastMessage.value = msg
