@@ -180,12 +180,12 @@ const promptDismissed = ref(false)
 const toastMessage = ref<string | null>(null)
 let toastTimer: number | null = null
 
-type DevicePreset = 'iphone16' | 'iphonese' | 'android' | 'fullscreen'
+type DevicePreset = 'iphone16' | 'foldduo' | 'android' | 'iphonese' | 'fullscreen'
 const devicePreset = ref<DevicePreset>('iphone16')
 
 function cycleDevicePreset() {
   playTactileTick(settings.hapticFeedback)
-  const order: DevicePreset[] = ['iphone16', 'android', 'iphonese', 'fullscreen']
+  const order: DevicePreset[] = ['iphone16', 'foldduo', 'android', 'iphonese', 'fullscreen']
   const next = order[(order.indexOf(devicePreset.value) + 1) % order.length]
   devicePreset.value = next
   updateSettings({ showDeviceFrame: next !== 'fullscreen' })
@@ -196,6 +196,8 @@ const currentDevicePresetLabel = computed(() => {
   switch (devicePreset.value) {
     case 'iphone16':
       return isEn ? 'iPhone 16 Pro' : 'iPhone 16 Pro'
+    case 'foldduo':
+      return isEn ? 'Fold / Duo' : '折叠屏 / Duo'
     case 'android':
       return isEn ? 'Android Ultra' : '安卓旗舰屏'
     case 'iphonese':
@@ -207,18 +209,20 @@ const currentDevicePresetLabel = computed(() => {
 
 const deviceContainerClass = computed(() => {
   if (!settings.showDeviceFrame || devicePreset.value === 'fullscreen') {
-    return 'max-w-lg h-dvh-screen pt-2 safe-top'
+    return 'max-w-xl h-dvh-screen pt-2 safe-top'
   }
   const baseFrame =
-    'max-w-md h-dvh-screen md:my-3 md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
+    'h-dvh-screen md:my-3 md:border-[10px] md:border-[#222226] md:shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.1)]'
   switch (devicePreset.value) {
+    case 'foldduo':
+      return `${baseFrame} max-w-2xl md:max-w-[660px] md:h-[830px] md:rounded-[36px]`
     case 'iphonese':
-      return `${baseFrame} md:max-w-[375px] md:h-[680px] md:rounded-[44px]`
+      return `${baseFrame} max-w-md md:max-w-[375px] md:h-[680px] md:rounded-[44px]`
     case 'android':
-      return `${baseFrame} md:max-w-[412px] md:h-[880px] md:rounded-[38px]`
+      return `${baseFrame} max-w-md md:max-w-[412px] md:h-[880px] md:rounded-[38px]`
     case 'iphone16':
     default:
-      return `${baseFrame} md:max-w-[400px] md:h-[844px] md:rounded-[52px]`
+      return `${baseFrame} max-w-md md:max-w-[400px] md:h-[844px] md:rounded-[52px]`
   }
 })
 
@@ -284,6 +288,15 @@ function detectDefaultLanguage(): AppLanguage {
   return 'zh'
 }
 
+function isTouchHardwareDevice(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || ''
+  return (
+    /Android|iPhone|iPad|iPod|HarmonyOS|Surface Duo|Mobile/i.test(ua) ||
+    (navigator.maxTouchPoints > 1 && window.innerWidth <= 1024)
+  )
+}
+
 const defaultSettings: AppSettings = {
   language: detectDefaultLanguage(),
   speedUnit: 'km/h',
@@ -293,7 +306,7 @@ const defaultSettings: AppSettings = {
   keepScreenAwake: true,
   hapticFeedback: true,
   viewMode: 'minimal',
-  showDeviceFrame: true,
+  showDeviceFrame: !isTouchHardwareDevice(),
   isProUnlocked: false,
   proLicenseCode: ''
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 min-h-0 h-full flex flex-col w-full max-w-md mx-auto px-6 pt-2.5 pb-4 select-none overflow-y-auto no-scrollbar font-sans">
+  <div class="flex-1 min-h-0 h-full flex flex-col w-full max-w-xl mx-auto px-6 pt-2.5 pb-4 select-none overflow-y-auto no-scrollbar font-sans">
     <!-- 页面标题: 左右严格对齐网格边缘 -->
     <div class="pt-1 pb-3.5 flex items-end justify-between shrink-0">
       <div>

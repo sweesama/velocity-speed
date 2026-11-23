@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 min-h-0 h-full flex flex-col justify-between w-full max-w-md mx-auto px-5 pt-2 pb-3 select-none overflow-y-auto no-scrollbar font-sans">
+  <div class="flex-1 min-h-0 h-full flex flex-col justify-between w-full max-w-xl mx-auto px-5 pt-2 pb-3 select-none overflow-y-auto no-scrollbar font-sans">
     <!-- 顶部唯一控制栏: 严格控制宽度 (总宽 < 290px，在 340px 视口内留足 50px 余量，绝不溢出) -->
     <header class="w-full flex items-center justify-between gap-2 pb-2.5 shrink-0">
       <!-- 左侧: 材质与实景背景切换 -->

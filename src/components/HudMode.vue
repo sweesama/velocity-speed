@@ -128,9 +128,9 @@ function cycleHudTheme() {
 const hudColorHex = computed(() => {
   switch (props.settings.hudTheme) {
     case 'emerald':
-      return '#00ff66'
+      return '#d4d4d8'
     case 'amber':
-      return '#ffb800'
+      return '#e2c799'
     default:
       return '#ffffff'
   }
@@ -139,11 +139,11 @@ const hudColorHex = computed(() => {
 const hudGlowRgba = computed(() => {
   switch (props.settings.hudTheme) {
     case 'emerald':
-      return 'rgba(0, 255, 102, 0.25)'
+      return 'rgba(212, 212, 216, 0.18)'
     case 'amber':
-      return 'rgba(255, 184, 0, 0.25)'
+      return 'rgba(226, 199, 153, 0.22)'
     default:
-      return 'rgba(255, 255, 255, 0.15)'
+      return 'rgba(255, 255, 255, 0.16)'
   }
 })
 

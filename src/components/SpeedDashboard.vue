@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex-1 min-h-0 h-full flex flex-col justify-between items-center w-full max-w-md mx-auto px-6 pt-3 pb-4 select-none font-sans overflow-hidden">
+  <div class="relative flex-1 min-h-0 h-full flex flex-col justify-between items-center w-full max-w-xl mx-auto px-6 pt-3 pb-4 select-none font-sans overflow-hidden">
     <!-- 极克制的单色铂金顶光: 摒弃一切廉价彩色光斑 -->
     <div
       class="ambient-glow absolute inset-0 pointer-events-none -z-10"

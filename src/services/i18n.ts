@@ -504,9 +504,9 @@ export const messages = {
 
     hudMirroredOn: '镜像投影开启',
     hudMirroredOff: '正向显示',
-    hudThemeWhite: '纯白',
-    hudThemeEmerald: '翠绿',
-    hudThemeAmber: '琥珀',
+    hudThemeWhite: '光学白',
+    hudThemeEmerald: '钛金属',
+    hudThemeAmber: '香槟金',
     hudInstruction: '将手机平放于前挡风玻璃或舷窗下\n通过玻璃反射即可观看正向数字',
 
     reportsTitle: '速度证书',
@@ -641,8 +641,8 @@ export const messages = {
     hudMirroredOn: 'Mirror On',
     hudMirroredOff: 'Direct View',
     hudThemeWhite: 'White',
-    hudThemeEmerald: 'Green',
-    hudThemeAmber: 'Amber',
+    hudThemeEmerald: 'Titanium',
+    hudThemeAmber: 'Champagne',
     hudInstruction: 'Place flat under windshield or cabin window\nto reflect upright numbers onto glass',
 
     reportsTitle: 'Speed Card',

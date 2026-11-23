@@ -4,21 +4,21 @@
     @click.self="$emit('close')"
   >
     <div
-      class="w-full max-w-3xl bg-[#121216] border border-white/15 rounded-[28px] p-5 sm:p-6 text-white shadow-2xl flex flex-col animate-fade-in font-sans my-auto"
+      class="w-full max-w-3xl bg-[#111115] border border-white/15 rounded-[28px] p-5 sm:p-6 text-white shadow-2xl flex flex-col animate-fade-in font-sans my-auto"
     >
       <!-- 顶部标题栏 -->
       <div class="flex items-center justify-between gap-3 pb-4 border-b border-white/[0.08]">
         <div>
           <div class="flex items-center space-x-2">
-            <span class="px-2 py-0.5 rounded bg-white text-black font-mono text-[10px] font-bold uppercase">
-              PROMO STUDIO
+            <span class="px-2 py-0.5 rounded bg-white text-black font-mono text-[10px] font-bold uppercase tracking-wider">
+              STUDIO
             </span>
             <h3 class="text-base sm:text-lg font-semibold tracking-tight">
-              小红书 / 社媒 3:4 爆款宣传图与文案工坊
+              小红书 / App Store 极简真机宣传图工坊
             </h3>
           </div>
           <p class="text-xs text-zinc-400 mt-1">
-            专为小红书、即刻、朋友圈与 App Store 设计的 4 张 1242×1656 超清宣传套图，一键导出即可直接发帖
+            参考 Apple 与 Leica 杂志画册排版：大幅留白、3D 钛金属真机光影、每张图仅保留一句话
           </p>
         </div>
 
@@ -31,7 +31,7 @@
         </button>
       </div>
 
-      <!-- 主体区: 左侧海报预览 + 右侧切换与一键发帖文案 -->
+      <!-- 主体区: 左侧 3:4 画册预览 + 右侧切换与去人机味文案 -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-5 pt-4 items-start">
         <!-- 左侧 3:4 海报高清实时渲染预览 (7列) -->
         <div class="md:col-span-7 flex flex-col items-center">
@@ -44,16 +44,16 @@
             />
           </div>
           <span class="text-[11px] text-zinc-500 mt-2">
-            分辨率：1242 × 1656 px (3:4 小红书黄金满屏比例 · 手机可长按保存)
+            1242 × 1656 px (3:4 满屏画册比例 · 手机可直接长按图片存相册)
           </span>
         </div>
 
-        <!-- 右侧控制面板与配套爆款文案 (5列) -->
+        <!-- 右侧控制面板与真人语气文案 (5列) -->
         <div class="md:col-span-5 flex flex-col justify-between space-y-4">
-          <!-- 4 张宣传图切换 -->
+          <!-- 4 张真机宣传图切换 -->
           <div>
-            <div class="text-xs font-medium text-zinc-400 mb-2">选择宣传图（共 4 张套图）：</div>
-            <div class="space-y-2">
+            <div class="text-xs font-medium text-zinc-400 mb-2">选择画册页（共 4 张）：</div>
+            <div class="space-y-1.5">
               <button
                 v-for="(slide, idx) in slides"
                 :key="slide.id"
@@ -71,7 +71,7 @@
                   class="text-[10px] font-mono px-1.5 py-0.5 rounded"
                   :class="activeSlide === idx ? 'bg-black/10 text-black' : 'bg-white/10 text-zinc-400'"
                 >
-                  P{{ idx + 1 }}
+                  0{{ idx + 1 }}
                 </span>
               </button>
             </div>
@@ -85,7 +85,7 @@
               class="w-full py-2.5 px-4 rounded-xl bg-white text-black font-semibold text-xs hover:bg-zinc-200 btn-spring cursor-pointer flex items-center justify-center space-x-1.5"
             >
               <Download class="w-3.5 h-3.5 stroke-[2.2]" />
-              <span>下载当前海报 (P{{ activeSlide + 1 }})</span>
+              <span>下载当前画册图 (0{{ activeSlide + 1 }})</span>
             </button>
 
             <button
@@ -95,24 +95,42 @@
               class="w-full py-2.5 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-white font-medium text-xs btn-spring cursor-pointer flex items-center justify-center space-x-1.5"
             >
               <Sparkles class="w-3.5 h-3.5 stroke-[1.8]" />
-              <span>{{ isDownloadingAll ? '正在依次导出 4 张套图...' : '一键导出全部 4 张小红书套图' }}</span>
+              <span>{{ isDownloadingAll ? '正在依次导出 4 张画册...' : '一键导出全部 4 张套图' }}</span>
             </button>
           </div>
 
-          <!-- 配套小红书/朋友圈高赞文案一键复制 -->
-          <div class="p-3.5 rounded-2xl bg-black/50 border border-white/[0.08] space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-zinc-300">配套小红书首发爆款文案</span>
+          <!-- 去“人机味”的真人叙事笔记文案 (支持两种真人语感切换) -->
+          <div class="p-3.5 rounded-2xl bg-black/50 border border-white/[0.08] space-y-2.5">
+            <div class="flex items-center justify-between gap-1">
+              <div class="flex items-center space-x-1 bg-white/[0.06] p-0.5 rounded-lg text-[10.5px]">
+                <button
+                  type="button"
+                  @click="copyTone = 'story'"
+                  class="px-2 py-0.5 rounded-md transition cursor-pointer"
+                  :class="copyTone === 'story' ? 'bg-white text-black font-semibold' : 'text-zinc-400'"
+                >
+                  真诚随笔风
+                </button>
+                <button
+                  type="button"
+                  @click="copyTone = 'minimal'"
+                  class="px-2 py-0.5 rounded-md transition cursor-pointer"
+                  :class="copyTone === 'minimal' ? 'bg-white text-black font-semibold' : 'text-zinc-400'"
+                >
+                  极简三句话
+                </button>
+              </div>
+
               <button
                 type="button"
                 @click="copyPostCopywriting"
-                class="px-2.5 py-1 rounded-lg bg-white text-black text-[11px] font-semibold hover:bg-zinc-200 btn-spring cursor-pointer"
+                class="px-2.5 py-1 rounded-lg bg-white text-black text-[11px] font-semibold hover:bg-zinc-200 btn-spring cursor-pointer whitespace-nowrap"
               >
-                {{ copiedText ? '已复制全文 ✓' : '一键复制文案' }}
+                {{ copiedText ? '已复制 ✓' : '复制文案' }}
               </button>
             </div>
-            <div class="text-[11px] text-zinc-400 leading-relaxed max-h-32 overflow-y-auto pr-1 whitespace-pre-line select-all">
-              {{ xhsCopywriting }}
+            <div class="text-[11px] text-zinc-300 leading-relaxed max-h-32 overflow-y-auto pr-1 whitespace-pre-line select-all">
+              {{ activeCopywriting }}
             </div>
           </div>
         </div>
@@ -122,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Download, Sparkles, X } from 'lucide-vue-next'
 import { playTactileTick } from '../services/audioCallouts'
 
@@ -134,32 +152,47 @@ const activeSlide = ref(0)
 const previewDataUrl = ref<string>('')
 const isDownloadingAll = ref(false)
 const copiedText = ref(false)
+const copyTone = ref<'story' | 'minimal'>('story')
 
 const slides = [
-  { id: 'flight', name: '封面 1：万米高空 885 km/h 速度证书' },
-  { id: 'dial', name: '配图 2：瑞士精密计时表盘 · 348 km/h 高铁' },
-  { id: 'hud', name: '配图 3：前挡风玻璃光学 HUD 镜像投影' },
-  { id: 'founder', name: '配图 4：4 大核心亮点与 100 席内测官招募' }
+  { id: 'flight', name: '01 · 万米高空，飞行模式下的真实速度' },
+  { id: 'dial', name: '02 · 像一块安静的机械表（瑞士表盘）' },
+  { id: 'hud', name: '03 · 夜间行车，平放即投影（光学白 HUD）' },
+  { id: 'founder', name: '04 · 留了 100 个创始内测席位（黑金卡）' }
 ]
 
-const xhsCopywriting = `标题：受够了满屏广告的测速App，我自己写了个徕卡风的 ✈️
+const copyTemplates = {
+  story: `做了一个很安静的测速仪，留给坐飞机喜欢看窗外的人
 
-一直想找一个干净、好看的实时测速与海拔表，在飞机靠窗、坐高铁或者夜间开车时看一眼真实速度和海拔，结果应用商店下了一圈全是弹窗广告和几十年前的汽配城界面。
+每次坐飞机选靠窗的位置，看着云层往后退，总会好奇现在到底飞了多快、在多少米的高空。
 
-干脆自己动手写了一个纯黑钛金属质感的实时测速与海拔仪 —— Velocity。
+以前下过几个测速软件，点开全是花里胡哨的汽配城表盘和关不掉的弹窗广告。后来干脆趁周末自己写了一个。
 
-✨ 几个我自己最喜欢的小细节：
-1. 飞机上开「飞行模式」也能测：直接读取手机底层卫星芯片的多普勒频移与几何海拔，坐飞机贴着舷窗就能测出 885 km/h 和 10600 米真实高空海拔。
-2. 速度认证证书 + 实景照片水印：内置了 48 句走心社交文案（从工位带薪静止 0 km/h 到万米高空 VIP），还能导入你随手拍的窗外风景合成徕卡风测速海报。
-3. 前挡风玻璃 HUD 投影：夜间开车平放在前挡风玻璃下，一键水平镜像翻转，直接把时速反射在玻璃上。
-4. 100% 离线与隐私保护：0 服务器上传，添加到手机桌面后断网也能秒开。
+没有做任何多余的颜色，只留了纯黑底色和白字。
+哪怕在万米高空开着飞行模式，把手机靠在舷窗边，它也能静静地跳出 885 km/h 和一万米的海拔。
 
-🎁 首批 100 位「创始内测官」限免招募：
-正式版准备定 ¥18 永久买断，现在刚上线，找 100 位朋友做首批内测官，免费送终身买断席位 + 海报专属「FOUNDER EDITION」激光刻印！
+顺手还加了个「速度卡片」的小功能：
+可以把你在飞机上、高铁上、或者傍晚散步时随手拍的照片垫在底下，配上一句不那么正经的旁白，存成一张很干净的卡片。
 
-评论区扣 1 或者聊聊你准备在什么交通工具上测速，我私信发你独享的一客一码！
+刚写完第一版，准备留 100 个长期免费的「创始内测席位」。
+如果你也常在路上，或者单纯喜欢这种克制的小工具，在下面留个言，我把内测码发给你。
 
-#独立开发 #极简App #飞机测速 #高铁测速 #自驾游 #车载HUD #小众宝藏App #实用工具`
+#独立开发 #App分享 #极简主义 #飞机靠窗 #高铁测速 #小众App #工业设计`,
+
+  minimal: `周末写了一个没有颜色的测速仪：Velocity
+
+只有黑白两色，不用注册登录，也不会上传任何位置轨迹。
+坐飞机开着飞行模式贴近舷窗，能直接测出 885 km/h 的巡航速度和一万米海拔；平时坐高铁、夜里开车或傍晚散步也能用。
+
+支持把旅途里随手拍的风景垫在卡片底下，存成一张带速度印记的明信片。
+
+刚上线，留了 100 个永久免费的「FOUNDER 创始内测码」。
+需要的朋友在评论区留个言，我私信发你。
+
+#独立开发者 #极简App #小众宝藏App #实用工具 #审美积累`
+}
+
+const activeCopywriting = computed(() => copyTemplates[copyTone.value])
 
 function drawRoundRect(
   ctx: CanvasRenderingContext2D,
@@ -178,6 +211,138 @@ function drawRoundRect(
   ctx.closePath()
 }
 
+/**
+ * 绘制高质感 3D 拉丝钛金属 iPhone 硬件外壳与屏幕玻璃高光
+ */
+function drawTitaniumHardwareFrame(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number
+) {
+  ctx.save()
+
+  // 1. 深邃摄影棚底部投影
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.95)'
+  ctx.shadowBlur = 95
+  ctx.shadowOffsetY = 36
+  drawRoundRect(ctx, x - 18, y - 18, w + 36, h + 36, 92)
+  ctx.fillStyle = '#0a0a0d'
+  ctx.fill()
+  ctx.restore()
+
+  // 2. 侧面物理钛金属按键 (左侧操作键+音量键，右侧电源键)
+  ctx.fillStyle = '#3a3a44'
+  drawRoundRect(ctx, x - 22, y + 180, 4, 48, 2)
+  ctx.fill()
+  drawRoundRect(ctx, x - 22, y + 265, 4, 92, 2)
+  ctx.fill()
+  drawRoundRect(ctx, x - 22, y + 375, 4, 92, 2)
+  ctx.fill()
+  drawRoundRect(ctx, x + w + 18, y + 295, 4, 130, 2)
+  ctx.fill()
+
+  // 3. 外层拉丝钛金属中框 (多段高光金属反射渐变)
+  const metalGrad = ctx.createLinearGradient(x - 18, y - 18, x + w + 18, y + h + 18)
+  metalGrad.addColorStop(0, '#52525e')
+  metalGrad.addColorStop(0.18, '#27272f')
+  metalGrad.addColorStop(0.5, '#3f3f4a')
+  metalGrad.addColorStop(0.82, '#1c1c22')
+  metalGrad.addColorStop(1, '#464652')
+
+  drawRoundRect(ctx, x - 18, y - 18, w + 36, h + 36, 92)
+  ctx.fillStyle = metalGrad
+  ctx.fill()
+
+  // 外框 1px 金属高光倒角切边
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)'
+  ctx.lineWidth = 2
+  ctx.stroke()
+
+  // 4. 内层黑色屏幕玻璃黑边 (Bezel)
+  drawRoundRect(ctx, x - 10, y - 10, w + 20, h + 20, 84)
+  ctx.fillStyle = '#030304'
+  ctx.fill()
+
+  // 5. 屏幕显示区基底
+  drawRoundRect(ctx, x, y, w, h, 76)
+  ctx.fillStyle = '#050507'
+  ctx.fill()
+
+  // 6. 顶部灵动岛硬件开孔與真实状态栏 (9:41 + 信号电池)
+  drawRoundRect(ctx, x + w / 2 - 96, y + 26, 192, 46, 23)
+  ctx.fillStyle = '#000000'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+
+  // 镜头微反光点
+  ctx.beginPath()
+  ctx.arc(x + w / 2 + 64, y + 49, 8, 0, Math.PI * 2)
+  ctx.fillStyle = '#11131a'
+  ctx.fill()
+  ctx.beginPath()
+  ctx.arc(x + w / 2 + 62, y + 47, 2.5, 0, Math.PI * 2)
+  ctx.fillStyle = 'rgba(255,255,255,0.35)'
+  ctx.fill()
+
+  // 状态栏时间与右侧图标
+  ctx.textAlign = 'left'
+  ctx.fillStyle = '#ffffff'
+  ctx.font = '600 24px "Inter", -apple-system, sans-serif'
+  ctx.fillText('09:41', x + 58, y + 57)
+
+  // 信号柱与电池图标
+  const bx = x + w - 105
+  const by = y + 38
+  for (let i = 0; i < 4; i++) {
+    const bh = 8 + i * 3.5
+    drawRoundRect(ctx, bx - 44 + i * 8, by + 18 - bh, 5, bh, 1.5)
+    ctx.fillStyle = '#ffffff'
+    ctx.fill()
+  }
+  drawRoundRect(ctx, bx, by + 2, 42, 20, 5)
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)'
+  ctx.lineWidth = 2
+  ctx.stroke()
+  drawRoundRect(ctx, bx + 4, by + 6, 30, 12, 2.5)
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+}
+
+/**
+ * 屏幕表面斜向光学玻璃微反光与底部 iOS Home 指示条
+ */
+function drawScreenGlassOverlay(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number
+) {
+  ctx.save()
+  drawRoundRect(ctx, x, y, w, h, 76)
+  ctx.clip()
+
+  // 斜向极柔和玻璃光泽
+  const glare = ctx.createLinearGradient(x, y, x + w * 0.85, y + h * 0.65)
+  glare.addColorStop(0, 'rgba(255, 255, 255, 0.045)')
+  glare.addColorStop(0.42, 'rgba(255, 255, 255, 0.012)')
+  glare.addColorStop(0.43, 'rgba(255, 255, 255, 0.0)')
+  glare.addColorStop(1, 'rgba(255, 255, 255, 0.0)')
+  ctx.fillStyle = glare
+  ctx.fillRect(x, y, w, h)
+
+  // 底部 Home Indicator 白条
+  drawRoundRect(ctx, x + w / 2 - 110, y + h - 22, 220, 8, 4)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.32)'
+  ctx.fill()
+
+  ctx.restore()
+}
+
 function renderSlideToDataUrl(index: number): string {
   const canvas = document.createElement('canvas')
   const W = 1242
@@ -187,216 +352,271 @@ function renderSlideToDataUrl(index: number): string {
   const ctx = canvas.getContext('2d')
   if (!ctx) return ''
 
-  // 全局深邃曜石黑背景
+  // 1. 徕卡暗房级深邃背景
   const bg = ctx.createLinearGradient(0, 0, 0, H)
-  bg.addColorStop(0, '#0d0d11')
-  bg.addColorStop(0.5, '#060608')
-  bg.addColorStop(1, '#030304')
+  bg.addColorStop(0, '#0e0e12')
+  bg.addColorStop(0.45, '#070709')
+  bg.addColorStop(1, '#020203')
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, W, H)
 
-  // 顶部铂金柔光
-  const topGlow = ctx.createRadialGradient(W / 2, 220, 40, W / 2, 220, 680)
-  topGlow.addColorStop(0, 'rgba(255,255,255,0.08)')
-  topGlow.addColorStop(1, 'rgba(0,0,0,0)')
-  ctx.fillStyle = topGlow
+  // 柔和顶部背光轮廓灯
+  const glow = ctx.createRadialGradient(W / 2, 420, 50, W / 2, 520, 720)
+  glow.addColorStop(0, 'rgba(255, 255, 255, 0.075)')
+  glow.addColorStop(0.6, 'rgba(214, 199, 178, 0.02)')
+  glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+  ctx.fillStyle = glow
   ctx.fillRect(0, 0, W, H)
 
-  // 顶部統一胶囊标签
-  const topTag =
-    index === 0
-      ? 'VELOCITY · 首批 100 位创始内测官招募'
-      : index === 1
-        ? 'SWISS CHRONOGRAPH · 瑞士精密仪表美学'
-        : index === 2
-          ? 'OPTICAL WINDSHIELD HUD · 前挡光学投影'
-          : 'FOUNDER EDITION · 零广告 · 100% 离线隐私'
-
-  ctx.font = '600 24px "JetBrains Mono", "Inter", sans-serif'
-  const tagW = ctx.measureText(topTag).width + 64
-  drawRoundRect(ctx, (W - tagW) / 2, 86, tagW, 54, 27)
-  ctx.fillStyle = 'rgba(255,255,255,0.07)'
-  ctx.fill()
-  ctx.strokeStyle = 'rgba(255,255,255,0.16)'
-  ctx.lineWidth = 1.5
-  ctx.stroke()
-
-  ctx.textAlign = 'center'
-  ctx.fillStyle = '#e4e4e7'
-  ctx.fillText(topTag, W / 2, 121)
-
-  // 主标题 & 副标题
-  const titles = [
+  // 2. 极简杂志级顶栏：只保留一行大标题 + 一行小字，大量留白，绝不堆砌字块
+  const headers = [
     {
-      t1: '坐飞机开飞行模式',
-      t2: '也能测出 885 km/h？',
-      sub: '极简徕卡风实时测速与万米高空海拔仪 · 100% 离线可用'
+      eyebrow: 'VELOCITY   ·   OFFLINE INSTRUMENT',
+      title: '万米高空，飞行模式下的真实速度',
+      sub: '贴近客舱舷窗即可直连卫星  ·  无需任何网络'
     },
     {
-      t1: '348 km/h 贴地飞行',
-      t2: '手里的冰美式纹丝不动',
-      sub: '60 帧卡尔曼平滑滤波 · 静止零漂移 · 移动自动开始计时'
+      eyebrow: 'CHRONOGRAPH   ·   KALMAN 60FPS',
+      title: '像一块安静的机械表',
+      sub: '极简巨幕与瑞士表盘双形态  ·  静止零漂移，移动自动计时'
     },
     {
-      t1: '手机平放前挡风玻璃下',
-      t2: '秒变百万豪车光学 HUD',
-      sub: '一键开启水平镜像翻转 · 纯白 / 航空翠绿 / 夜航琥珀三色温'
+      eyebrow: 'OPTICAL HUD   ·   MIRROR PROJECTION',
+      title: '夜间行车，平放即投影',
+      sub: '光学白与香槟金双色温  ·  前挡风玻璃与舷窗反射成正像'
     },
     {
-      t1: '受够了满屏广告的测速 App',
-      t2: '我自己写了一个纯粹的',
-      sub: '无需注册登录 · 零服务器上传 · 48 句走心社交金句'
+      eyebrow: 'FOUNDER EDITION   ·   LIMITED 100',
+      title: '留了 100 个创始内测席位',
+      sub: '纯离线  ·  零广告  ·  零轨迹上传  ·  专属海报编号刻印'
     }
   ][index]
 
   ctx.textAlign = 'center'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.42)'
+  ctx.font = '500 21px "JetBrains Mono", monospace'
+  ctx.fillText(headers.eyebrow, W / 2, 130)
+
   ctx.fillStyle = '#ffffff'
-  ctx.font = '700 68px "Inter", "PingFang SC", "Microsoft YaHei", sans-serif'
-  ctx.fillText(titles.t1, W / 2, 235)
-  ctx.fillText(titles.t2, W / 2, 322)
+  ctx.font = '500 58px "Inter", "PingFang SC", "Hiragino Sans GB", sans-serif'
+  ctx.fillText(headers.title, W / 2, 224)
 
-  ctx.fillStyle = 'rgba(255,255,255,0.55)'
-  ctx.font = '400 30px "Inter", "PingFang SC", sans-serif'
-  ctx.fillText(titles.sub, W / 2, 386)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+  ctx.font = '400 27px "Inter", "PingFang SC", sans-serif'
+  ctx.fillText(headers.sub, W / 2, 286)
 
-  // 中央主视觉区 (Y: 450 -> 1460)
+  // 3. 主视觉舞台
   if (index === 0) {
-    // 绘制 iPhone 16 Pro 钛金属样机框展示速度证书
-    const phoneX = 196
-    const phoneY = 445
-    const phoneW = 850
-    const phoneH = 1020
+    // ==================== P1: 3D 钛金属 iPhone 展示「万米高空实景速度证书」 ====================
+    const pX = 206
+    const pY = 380
+    const pW = 830
+    const pH = 1220
 
-    drawRoundRect(ctx, phoneX - 14, phoneY - 14, phoneW + 28, phoneH + 28, 76)
-    ctx.fillStyle = '#242429'
+    drawTitaniumHardwareFrame(ctx, pX, pY, pW, pH)
+
+    // 手机内顶栏 (曜石 | 钛金 | 暖砂 | 实景 + 保存)
+    const barY = pY + 102
+    drawRoundRect(ctx, pX + 48, barY, 370, 52, 26)
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.22)'
-    ctx.lineWidth = 3
-    ctx.stroke()
-
-    drawRoundRect(ctx, phoneX, phoneY, phoneW, phoneH, 64)
-    const cardGrad = ctx.createLinearGradient(phoneX, phoneY, phoneX, phoneY + phoneH)
-    cardGrad.addColorStop(0, '#18191e')
-    cardGrad.addColorStop(1, '#08080b')
-    ctx.fillStyle = cardGrad
+    drawRoundRect(ctx, pX + 312, barY + 4, 102, 44, 22)
+    ctx.fillStyle = '#ffffff'
     ctx.fill()
 
-    // 灵动岛
-    drawRoundRect(ctx, W / 2 - 90, phoneY + 24, 180, 38, 19)
+    ctx.textAlign = 'center'
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'
+    ctx.font = '500 20px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('曜石      钛金      暖砂', pX + 180, barY + 33)
     ctx.fillStyle = '#000000'
-    ctx.fill()
+    ctx.font = '600 20px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('📷 实景', pX + 363, barY + 33)
 
-    // 内部证书卡片
-    const cX = phoneX + 48
-    const cY = phoneY + 95
-    const cW = phoneW - 96
-    const cH = phoneH - 145
-    drawRoundRect(ctx, cX, cY, cW, cH, 44)
-    ctx.fillStyle = '#0f1014'
+    // 右侧换词 + 保存胶囊
+    drawRoundRect(ctx, pX + pW - 156, barY, 108, 52, 26)
+    ctx.fillStyle = '#ffffff'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.14)'
+    ctx.fillStyle = '#000000'
+    ctx.font = '600 20px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('↓ 保存', pX + pW - 102, barY + 33)
+
+    // 证书主卡片 (带高空暮色云海氛围光影衬底)
+    const cX = pX + 48
+    const cY = pY + 180
+    const cW = pW - 96
+    const cH = 955
+
+    ctx.save()
+    drawRoundRect(ctx, cX, cY, cW, cH, 48)
+    ctx.clip()
+
+    // 模拟万米高空舷窗暮色地平线摄影渐变衬底
+    const skyGrad = ctx.createLinearGradient(cX, cY, cX, cY + cH)
+    skyGrad.addColorStop(0, '#0d1322')
+    skyGrad.addColorStop(0.38, '#1a2234')
+    skyGrad.addColorStop(0.54, '#3d3533')
+    skyGrad.addColorStop(0.62, '#16161c')
+    skyGrad.addColorStop(1, '#08080b')
+    ctx.fillStyle = skyGrad
+    ctx.fillRect(cX, cY, cW, cH)
+
+    // 远方地平线柔光带 (模拟平流层晨昏线)
+    const horizonGlow = ctx.createRadialGradient(
+      W / 2,
+      cY + 470,
+      10,
+      W / 2,
+      cY + 470,
+      460
+    )
+    horizonGlow.addColorStop(0, 'rgba(235, 205, 170, 0.22)')
+    horizonGlow.addColorStop(0.5, 'rgba(160, 175, 210, 0.08)')
+    horizonGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = horizonGlow
+    ctx.fillRect(cX, cY, cW, cH)
+
+    ctx.restore()
+
+    drawRoundRect(ctx, cX, cY, cW, cH, 48)
+    ctx.strokeStyle = 'rgba(255,255,255,0.16)'
     ctx.lineWidth = 2
     ctx.stroke()
 
-    // 证书顶栏
+    // 证书顶部品牌与航班备注
     ctx.textAlign = 'left'
-    ctx.fillStyle = 'rgba(255,255,255,0.55)'
-    ctx.font = '600 20px "JetBrains Mono", monospace'
-    ctx.fillText('● VELOCITY · FOUNDER EDITION', cX + 44, cY + 64)
+    ctx.fillStyle = 'rgba(255,255,255,0.6)'
+    ctx.font = '600 19px "JetBrains Mono", monospace'
+    ctx.fillText('● VELOCITY · FOUNDER', cX + 46, cY + 64)
 
-    ctx.fillStyle = 'rgba(255,255,255,0.85)'
-    ctx.font = '400 26px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('航班 CA1501 · 万米平流层巡航', cX + 44, cY + 106)
+    ctx.fillStyle = 'rgba(255,255,255,0.9)'
+    ctx.font = '400 25px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('CA1501 · 万米平流层巡航', cX + 46, cY + 106)
 
-    // 右上角勋章
-    drawRoundRect(ctx, cX + cW - 230, cY + 48, 186, 50, 25)
-    ctx.fillStyle = 'rgba(255,255,255,0.08)'
+    // 右上角标签
+    drawRoundRect(ctx, cX + cW - 220, cY + 48, 174, 48, 24)
+    ctx.fillStyle = 'rgba(255,255,255,0.1)'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)'
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)'
+    ctx.lineWidth = 1.5
     ctx.stroke()
     ctx.textAlign = 'center'
     ctx.fillStyle = '#ffffff'
-    ctx.font = '500 22px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('万米高空VIP', cX + cW - 137, cY + 81)
+    ctx.font = '500 21px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('万米高空VIP', cX + cW - 133, cY + 80)
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)'
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)'
     ctx.beginPath()
-    ctx.moveTo(cX + 44, cY + 138)
-    ctx.lineTo(cX + cW - 44, cY + 138)
+    ctx.moveTo(cX + 46, cY + 140)
+    ctx.lineTo(cX + cW - 46, cY + 140)
     ctx.stroke()
 
     // 中央大数字 885 KM/H
-    ctx.fillStyle = 'rgba(255,255,255,0.42)'
-    ctx.font = '600 20px "JetBrains Mono", monospace'
-    ctx.fillText('今日最高速度', W / 2, cY + 215)
+    ctx.fillStyle = 'rgba(255,255,255,0.48)'
+    ctx.font = '500 19px "JetBrains Mono", monospace'
+    ctx.fillText('今日最高速度', W / 2, cY + 235)
 
     ctx.fillStyle = '#ffffff'
-    ctx.font = '200 210px "Outfit", "Inter", sans-serif'
-    ctx.fillText('885', W / 2 - 36, cY + 410)
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'
-    ctx.font = '400 34px "JetBrains Mono", monospace'
-    ctx.fillText('KM/H', W / 2 + 185, cY + 410)
+    ctx.font = '200 215px "Outfit", "Inter", sans-serif'
+    ctx.fillText('885', W / 2 - 34, cY + 435)
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'
+    ctx.font = '400 32px "JetBrains Mono", monospace'
+    ctx.fillText('KM/H', W / 2 + 188, cY + 435)
 
     // 走心金句 (严格语义断行)
     ctx.fillStyle = '#ffffff'
-    ctx.font = '500 30px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('今日速度超越了全球 99.94% 的人类', W / 2, cY + 505)
-    ctx.fillText('正在一万米高空优雅地喝加冰可乐', W / 2, cY + 552)
+    ctx.font = '500 29px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('今日速度超越了全球 99.94% 的人类', W / 2, cY + 540)
+    ctx.fillText('正在一万米高空优雅地喝加冰可乐', W / 2, cY + 586)
 
-    ctx.fillStyle = 'rgba(255,255,255,0.5)'
-    ctx.font = '400 24px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('窗外零下 50°C、时速近千公里', W / 2, cY + 610)
-    ctx.fillText('地面的鸡毛蒜皮，在云层上连像素都不算', W / 2, cY + 648)
+    ctx.fillStyle = 'rgba(255,255,255,0.58)'
+    ctx.font = '400 23px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('窗外零下 50°C、时速近千公里', W / 2, cY + 644)
+    ctx.fillText('地面的鸡毛蒜皮，在云层上连像素都不算', W / 2, cY + 682)
 
     // 底部四联数据栏
-    const gTop = cY + 705
-    const gBot = cY + 820
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)'
+    const gTop = cY + 750
+    const gBot = cY + 865
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)'
     ctx.beginPath()
-    ctx.moveTo(cX + 44, gTop)
-    ctx.lineTo(cX + cW - 44, gTop)
-    ctx.moveTo(cX + 44, gBot)
-    ctx.lineTo(cX + cW - 44, gBot)
+    ctx.moveTo(cX + 46, gTop)
+    ctx.lineTo(cX + cW - 46, gTop)
+    ctx.moveTo(cX + 46, gBot)
+    ctx.lineTo(cX + cW - 46, gBot)
     ctx.stroke()
 
     const stats = [
       { l: '平均速度', v: '812 km/h' },
       { l: '最高海拔', v: '10600 m' },
-      { l: '累计里程', v: '1240.5 km' },
-      { l: '有效时长', v: '01:32:15' }
+      { l: '累计里程', v: '1240 km' },
+      { l: '有效时长', v: '01:32' }
     ]
-    const colW = (cW - 88) / 4
+    const colW = (cW - 92) / 4
     stats.forEach((s, i) => {
-      const sx = cX + 44 + colW * i + colW / 2
-      ctx.fillStyle = 'rgba(255,255,255,0.45)'
-      ctx.font = '400 20px "Inter", "PingFang SC", sans-serif'
+      const sx = cX + 46 + colW * i + colW / 2
+      ctx.fillStyle = 'rgba(255,255,255,0.48)'
+      ctx.font = '400 19px "Inter", "PingFang SC", sans-serif'
       ctx.fillText(s.l, sx, gTop + 44)
       ctx.fillStyle = '#ffffff'
-      ctx.font = '600 25px "JetBrains Mono", monospace'
+      ctx.font = '500 25px "JetBrains Mono", monospace'
       ctx.fillText(s.v, sx, gTop + 86)
     })
+
+    ctx.textAlign = 'left'
+    ctx.fillStyle = 'rgba(255,255,255,0.38)'
+    ctx.font = '500 18px "JetBrains Mono", monospace'
+    ctx.fillText('2026.11.23 18:42', cX + 46, cY + 915)
+    ctx.textAlign = 'right'
+    ctx.fillText('VELOCITY', cX + cW - 46, cY + 915)
+
+    drawScreenGlassOverlay(ctx, pX, pY, pW, pH)
   } else if (index === 1) {
-    // 配图 2: 瑞士精密单色计时表盘 (348 km/h)
-    const phoneX = 196
-    const phoneY = 445
-    const phoneW = 850
-    const phoneH = 1020
+    // ==================== P2: 3D 钛金属 iPhone 展示「瑞士精密单色计时表盘」 ====================
+    const pX = 206
+    const pY = 380
+    const pW = 830
+    const pH = 1220
 
-    drawRoundRect(ctx, phoneX - 14, phoneY - 14, phoneW + 28, phoneH + 28, 76)
-    ctx.fillStyle = '#242429'
+    drawTitaniumHardwareFrame(ctx, pX, pY, pW, pH)
+
+    // 顶部状态胶囊与极简/表盘切换
+    const barY = pY + 105
+    drawRoundRect(ctx, pX + 54, barY, 52, 52, 26)
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'
     ctx.fill()
-    drawRoundRect(ctx, phoneX, phoneY, phoneW, phoneH, 64)
-    ctx.fillStyle = '#070709'
+    ctx.beginPath()
+    ctx.arc(pX + 80, barY + 26, 7, 0, Math.PI * 2)
+    ctx.fillStyle = '#ffffff'
     ctx.fill()
 
-    // 绘制精密表盘
+    drawRoundRect(ctx, pX + pW - 310, barY, 168, 52, 26)
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'
+    ctx.fill()
+    drawRoundRect(ctx, pX + pW - 224, barY + 4, 78, 44, 22)
+    ctx.fillStyle = '#ffffff'
+    ctx.fill()
+    ctx.textAlign = 'center'
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'
+    ctx.font = '500 20px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('极简', pX + pW - 266, barY + 33)
+    ctx.fillStyle = '#000000'
+    ctx.font = '600 20px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('表盘', pX + pW - 185, barY + 33)
+
+    drawRoundRect(ctx, pX + pW - 128, barY, 74, 52, 26)
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'
+    ctx.fill()
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '600 18px "JetBrains Mono", monospace'
+    ctx.fillText('HUD', pX + pW - 91, barY + 32)
+
+    // 中央瑞士 60 刻度计时表盘
     const cx = W / 2
-    const cy = phoneY + 460
-    const outerR = 310
+    const cy = pY + 515
+    const outerR = 295
 
     ctx.beginPath()
-    ctx.arc(cx, cy, outerR + 22, 0, Math.PI * 2)
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)'
+    ctx.arc(cx, cy, outerR + 24, 0, Math.PI * 2)
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)'
     ctx.lineWidth = 2
     ctx.stroke()
 
@@ -417,233 +637,282 @@ function renderSlideToDataUrl(index: number): string {
           ? '#ffffff'
           : isMajor
             ? 'rgba(255,255,255,0.28)'
-            : 'rgba(255,255,255,0.1)'
-      ctx.lineWidth = isMajor ? 5.5 : 3
+            : 'rgba(255,255,255,0.09)'
+      ctx.lineWidth = isMajor ? 5 : 3
       ctx.lineCap = 'round'
       ctx.stroke()
     }
 
     // 内圈罗盘虚线环
     ctx.beginPath()
-    ctx.arc(cx, cy, 230, 0, Math.PI * 2)
-    ctx.setLineDash([6, 12])
+    ctx.arc(cx, cy, 222, 0, Math.PI * 2)
+    ctx.setLineDash([5, 11])
     ctx.strokeStyle = 'rgba(255,255,255,0.14)'
     ctx.lineWidth = 2
     ctx.stroke()
     ctx.setLineDash([])
 
     ctx.textAlign = 'center'
-    ctx.fillStyle = 'rgba(255,255,255,0.65)'
-    ctx.font = '600 24px "JetBrains Mono", monospace'
-    ctx.fillText('285° 西北', cx, cy - 115)
+    ctx.fillStyle = 'rgba(255,255,255,0.55)'
+    ctx.font = '600 22px "JetBrains Mono", monospace'
+    ctx.fillText('285° 西北', cx, cy - 108)
 
     ctx.fillStyle = '#ffffff'
-    ctx.font = '200 175px "Outfit", "Inter", sans-serif'
-    ctx.fillText('348', cx - 18, cy + 45)
-    ctx.fillStyle = 'rgba(255,255,255,0.35)'
-    ctx.font = '200 58px "Outfit", sans-serif'
-    ctx.fillText('.4', cx + 155, cy + 45)
+    ctx.font = '200 165px "Outfit", "Inter", sans-serif'
+    ctx.fillText('348', cx - 16, cy + 42)
+    ctx.fillStyle = 'rgba(255,255,255,0.32)'
+    ctx.font = '200 54px "Outfit", sans-serif'
+    ctx.fillText('.4', cx + 148, cy + 42)
 
-    drawRoundRect(ctx, cx - 80, cy + 85, 160, 48, 24)
-    ctx.fillStyle = 'rgba(255,255,255,0.08)'
+    drawRoundRect(ctx, cx - 76, cy + 82, 152, 46, 23)
+    ctx.fillStyle = 'rgba(255,255,255,0.07)'
     ctx.fill()
-    ctx.fillStyle = '#ffffff'
-    ctx.font = '500 24px "JetBrains Mono", monospace'
-    ctx.fillText('KM/H', cx, cy + 117)
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'
+    ctx.font = '500 22px "JetBrains Mono", monospace'
+    ctx.fillText('KM/H', cx, cy + 113)
 
-    // 底部三列指标
-    const bY = phoneY + 850
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)'
+    // 底部实时速度轨迹曲线与三列指标
+    const bY = pY + 905
     ctx.beginPath()
-    ctx.moveTo(phoneX + 64, bY)
-    ctx.lineTo(phoneX + phoneW - 64, bY)
+    ctx.moveTo(pX + 58, bY - 28)
+    ctx.bezierCurveTo(pX + 240, bY - 32, pX + 420, bY - 75, pX + pW - 58, bY - 68)
+    ctx.strokeStyle = 'rgba(255,255,255,0.38)'
+    ctx.lineWidth = 3
+    ctx.stroke()
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.09)'
+    ctx.lineWidth = 1.5
+    ctx.beginPath()
+    ctx.moveTo(pX + 58, bY)
+    ctx.lineTo(pX + pW - 58, bY)
     ctx.stroke()
 
     const bStats = [
-      { l: '最高速度', v: '351', u: 'KM/H', x: phoneX + 140 },
-      { l: '海拔高度', v: '164', u: '↑0.8m/s · m', x: W / 2 },
-      { l: '累计里程', v: '528.6', u: 'km', x: phoneX + phoneW - 140 }
+      { l: '最高速度', v: '351', u: 'KM/H', x: pX + 125, align: 'left' as const },
+      { l: '海拔高度', v: '164', u: 'm', x: W / 2, align: 'center' as const },
+      { l: '累计里程', v: '528.6', u: 'km', x: pX + pW - 125, align: 'right' as const }
     ]
     bStats.forEach((b) => {
-      ctx.fillStyle = 'rgba(255,255,255,0.45)'
-      ctx.font = '500 22px "Inter", "PingFang SC", sans-serif'
-      ctx.fillText(b.l, b.x, bY + 48)
+      ctx.textAlign = b.align
+      ctx.fillStyle = 'rgba(255,255,255,0.42)'
+      ctx.font = '500 21px "Inter", "PingFang SC", sans-serif'
+      ctx.fillText(b.l, b.x, bY + 46)
       ctx.fillStyle = '#ffffff'
-      ctx.font = '300 54px "Outfit", sans-serif'
+      ctx.font = '300 56px "Outfit", sans-serif'
       ctx.fillText(b.v, b.x, bY + 108)
-      ctx.fillStyle = 'rgba(255,255,255,0.4)'
-      ctx.font = '400 20px "JetBrains Mono", monospace'
+      ctx.fillStyle = 'rgba(255,255,255,0.38)'
+      ctx.font = '400 19px "JetBrains Mono", monospace'
       ctx.fillText(b.u, b.x, bY + 142)
     })
-  } else if (index === 2) {
-    // 配图 3: 前挡风玻璃 HUD 镜像模式展示
-    const boxX = 120
-    const boxY = 455
-    const boxW = W - 240
-    const boxH = 980
 
-    drawRoundRect(ctx, boxX, boxY, boxW, boxH, 52)
-    ctx.fillStyle = '#050507'
+    drawScreenGlassOverlay(ctx, pX, pY, pW, pH)
+  } else if (index === 2) {
+    // ==================== P3: 光学纯白与香槟金前挡 HUD (彻底摒弃廉价绿色) ====================
+    const boxX = 136
+    const boxY = 390
+    const boxW = W - 272
+    const boxH = 1090
+
+    // 挡风玻璃夜航暗调取景框
+    ctx.save()
+    ctx.shadowColor = 'rgba(0,0,0,0.9)'
+    ctx.shadowBlur = 80
+    drawRoundRect(ctx, boxX, boxY, boxW, boxH, 56)
+    const glassBg = ctx.createLinearGradient(boxX, boxY, boxX, boxY + boxH)
+    glassBg.addColorStop(0, '#121318')
+    glassBg.addColorStop(0.55, '#08080b')
+    glassBg.addColorStop(1, '#040406')
+    ctx.fillStyle = glassBg
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)'
+    ctx.restore()
+
+    drawRoundRect(ctx, boxX, boxY, boxW, boxH, 56)
+    ctx.strokeStyle = 'rgba(255,255,255,0.16)'
+    ctx.lineWidth = 2
+    ctx.stroke()
+
+    // 上半部：前挡风玻璃光学纯白虚像反射 (带柔和铂金散景光晕)
+    const hudGlow = ctx.createRadialGradient(W / 2, boxY + 290, 20, W / 2, boxY + 290, 390)
+    hudGlow.addColorStop(0, 'rgba(255, 255, 255, 0.11)')
+    hudGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = hudGlow
+    ctx.fillRect(boxX, boxY, boxW, 560)
+
+    ctx.textAlign = 'center'
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'
+    ctx.font = '500 20px "JetBrains Mono", "Inter", sans-serif'
+    ctx.fillText('WINDSHIELD REFLECTION  ·  前挡玻璃光学反射成像', W / 2, boxY + 86)
+
+    // 光学纯白巨幕投影数字
+    ctx.save()
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.32)'
+    ctx.shadowBlur = 32
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '200 235px "Outfit", "Inter", sans-serif'
+    ctx.fillText('118', W / 2 - 28, boxY + 330)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
+    ctx.font = '200 72px "Outfit", sans-serif'
+    ctx.fillText('.5', W / 2 + 190, boxY + 330)
+    ctx.restore()
+
+    ctx.font = '400 28px "JetBrains Mono", monospace'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)'
+    ctx.fillText('KM/H    ·    ALT 420 m    ·    310° NW', W / 2, boxY + 412)
+
+    // 仪表台光学反射基准线
+    const lineGrad = ctx.createLinearGradient(boxX + 80, 0, boxX + boxW - 80, 0)
+    lineGrad.addColorStop(0, 'rgba(255,255,255,0)')
+    lineGrad.addColorStop(0.5, 'rgba(255,255,255,0.22)')
+    lineGrad.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.strokeStyle = lineGrad
+    ctx.lineWidth = 1.5
+    ctx.beginPath()
+    ctx.moveTo(boxX + 80, boxY + 530)
+    ctx.lineTo(boxX + boxW - 80, boxY + 530)
+    ctx.stroke()
+
+    // 下半部：平放于仪表台的钛金属手机 (呈现水平镜像翻转 scaleX(-1))
+    const flatX = W / 2 - 330
+    const flatY = boxY + 610
+    const flatW = 660
+    const flatH = 320
+
+    drawRoundRect(ctx, flatX - 6, flatY - 6, flatW + 12, flatH + 12, 48)
+    ctx.fillStyle = '#2d2d35'
+    ctx.fill()
+    drawRoundRect(ctx, flatX, flatY, flatW, flatH, 42)
+    ctx.fillStyle = '#030304'
+    ctx.fill()
+    ctx.strokeStyle = 'rgba(255,255,255,0.18)'
+    ctx.stroke()
+
+    ctx.save()
+    ctx.translate(W / 2, flatY + 185)
+    ctx.scale(-1, 1)
+    ctx.textAlign = 'center'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
+    ctx.font = '200 145px "Outfit", "Inter", sans-serif'
+    ctx.fillText('118.5', 0, 0)
+    ctx.font = '400 22px "JetBrains Mono", monospace'
+    ctx.fillText('KM/H  ·  ALT 420 m', 0, 50)
+    ctx.restore()
+
+    // 底部三档高定光学色温 (光学白 / 钛金属 / 香槟金)
+    const tones = [
+      { label: '● 光学白 WHITE', color: '#ffffff' },
+      { label: '● 钛金属 TITANIUM', color: '#d4d4d8' },
+      { label: '● 香槟金 CHAMPAGNE', color: '#e2c799' }
+    ]
+    tones.forEach((tn, idx) => {
+      const tx = boxX + 205 + idx * 280
+      const ty = boxY + 1015
+      ctx.fillStyle = tn.color
+      ctx.font = '500 20px "JetBrains Mono", "Inter", sans-serif'
+      ctx.fillText(tn.label, tx, ty)
+    })
+  } else {
+    // ==================== P4: 高定拉丝黑钛「FOUNDER PASS 创始内测官实体通行证」 ====================
+    // 不再堆砌 4 个文字框，而是绘制一张极具收藏感的 Apple Wallet / Leica 风格黑钛金属实体卡
+    const cardW = 920
+    const cardH = 580
+    const cardX = (W - cardW) / 2
+    const cardY = 470
+
+    ctx.save()
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.95)'
+    ctx.shadowBlur = 95
+    ctx.shadowOffsetY = 40
+    drawRoundRect(ctx, cardX, cardY, cardW, cardH, 48)
+    const metalCard = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH)
+    metalCard.addColorStop(0, '#23242a')
+    metalCard.addColorStop(0.35, '#121216')
+    metalCard.addColorStop(0.7, '#19191f')
+    metalCard.addColorStop(1, '#0b0b0e')
+    ctx.fillStyle = metalCard
+    ctx.fill()
+    ctx.restore()
+
+    // 金属卡片斜向光泽与高光边框
+    drawRoundRect(ctx, cardX, cardY, cardW, cardH, 48)
+    const borderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH)
+    borderGrad.addColorStop(0, 'rgba(255,255,255,0.38)')
+    borderGrad.addColorStop(0.5, 'rgba(255,255,255,0.1)')
+    borderGrad.addColorStop(1, 'rgba(214,199,178,0.32)')
+    ctx.strokeStyle = borderGrad
     ctx.lineWidth = 2.5
     ctx.stroke()
 
-    // 上半部：前挡风玻璃正向虚像投影 (航空翠绿 #00ff66)
-    ctx.save()
-    const hudGlow = ctx.createRadialGradient(W / 2, boxY + 290, 20, W / 2, boxY + 290, 380)
-    hudGlow.addColorStop(0, 'rgba(0, 255, 102, 0.14)')
-    hudGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    ctx.fillStyle = hudGlow
-    ctx.fillRect(boxX, boxY, boxW, 540)
+    // 卡片左上角品牌与右上角席位编号
+    ctx.textAlign = 'left'
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '600 26px "JetBrains Mono", monospace'
+    ctx.fillText('● VELOCITY', cardX + 68, cardY + 86)
 
-    ctx.textAlign = 'center'
     ctx.fillStyle = 'rgba(255,255,255,0.45)'
-    ctx.font = '500 24px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('▲ 前挡风玻璃 / 客舱舷窗 光学反射正向成像', W / 2, boxY + 80)
+    ctx.font = '400 20px "JetBrains Mono", monospace'
+    ctx.fillText('INSTRUMENT  ·  LIFETIME PASS', cardX + 68, cardY + 122)
 
-    ctx.fillStyle = '#00ff66'
-    ctx.font = '200 230px "Outfit", "Inter", sans-serif'
-    ctx.fillText('118', W / 2 - 30, boxY + 315)
-    ctx.font = '200 72px "Outfit", sans-serif'
-    ctx.fillText('.5', W / 2 + 190, boxY + 315)
-
-    ctx.font = '500 32px "JetBrains Mono", monospace'
-    ctx.fillStyle = 'rgba(0, 255, 102, 0.75)'
-    ctx.fillText('KM/H   ·   ALT 420 m   ·   310° NW', W / 2, boxY + 390)
-    ctx.restore()
-
-    // 中间中控台分界线
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)'
-    ctx.setLineDash([10, 10])
-    ctx.beginPath()
-    ctx.moveTo(boxX + 60, boxY + 510)
-    ctx.lineTo(boxX + boxW - 60, boxY + 510)
-    ctx.stroke()
-    ctx.setLineDash([])
-
-    // 下半部：平放的手机屏幕镜像画面 (scaleX(-1))
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'
-    ctx.font = '500 24px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('▼ 手机平放于仪表台（开启 HUD 镜像翻转模式）', W / 2, boxY + 575)
-
-    ctx.save()
-    ctx.translate(W / 2, boxY + 770)
-    ctx.scale(-1, 1)
-    ctx.textAlign = 'center'
-    ctx.fillStyle = 'rgba(0, 255, 102, 0.45)'
-    ctx.font = '200 170px "Outfit", "Inter", sans-serif'
-    ctx.fillText('118.5', 0, 0)
-    ctx.font = '500 26px "JetBrains Mono", monospace'
-    ctx.fillText('KM/H · ALT 420 m', 0, 56)
-    ctx.restore()
-
-    // 三色温标签展示
-    const themes = [
-      { name: '纯白光学 WHITE', color: '#ffffff' },
-      { name: '航空翠绿 GREEN', color: '#00ff66' },
-      { name: '夜航琥珀 AMBER', color: '#ffb800' }
-    ]
-    themes.forEach((th, idx) => {
-      const tx = boxX + 185 + idx * 315
-      const ty = boxY + 910
-      drawRoundRect(ctx, tx - 135, ty - 34, 270, 52, 26)
-      ctx.fillStyle = 'rgba(255,255,255,0.05)'
-      ctx.fill()
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)'
-      ctx.stroke()
-      ctx.fillStyle = th.color
-      ctx.font = '600 22px "JetBrains Mono", "Inter", sans-serif'
-      ctx.fillText(th.name, tx, ty)
-    })
-  } else {
-    // 配图 4: 四大核心卖点 2x2 建筑卡片 + 内测官福利
-    const cards = [
-      {
-        num: '01 · OFFLINE GPS',
-        title: '万米高空飞行模式直测',
-        d1: '无需任何手机流量或 Wi-Fi 网络',
-        d2: '通过卫星多普勒频移直测速度与真实海拔'
-      },
-      {
-        num: '02 · PHOTO STUDIO',
-        title: '实景相册水印证书合拍',
-        d1: '支持导入机舱舷窗、自驾旅途实拍风景',
-        d2: '一键合成曜石黑、钛金属、暖砂金高定大片'
-      },
-      {
-        num: '03 · 48 VIRAL QUOTES',
-        title: '48 句走心社交段子引擎',
-        d1: '从工位带薪静止 0 km/h 到万米高空 900 km/h',
-        d2: '中英双语母语级梗库，手工排版绝不断词'
-      },
-      {
-        num: '04 · 100% PRIVATE',
-        title: '零广告 · 零服务器上传',
-        d1: '无需手机号注册登录，不收集任何轨迹隐私',
-        d2: '添加到手机桌面即可获得无边框全屏体验'
-      }
-    ]
-
-    const startX = 110
-    const startY = 460
-    const cardW = 495
-    const cardH = 380
-    const gap = 32
-
-    cards.forEach((c, i) => {
-      const col = i % 2
-      const row = Math.floor(i / 2)
-      const x = startX + col * (cardW + gap)
-      const y = startY + row * (cardH + gap)
-
-      drawRoundRect(ctx, x, y, cardW, cardH, 36)
-      ctx.fillStyle = '#121318'
-      ctx.fill()
-      ctx.strokeStyle = 'rgba(255,255,255,0.14)'
-      ctx.lineWidth = 2
-      ctx.stroke()
-
-      ctx.textAlign = 'left'
-      ctx.fillStyle = 'rgba(255,255,255,0.45)'
-      ctx.font = '600 22px "JetBrains Mono", monospace'
-      ctx.fillText(c.num, x + 44, y + 72)
-
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '700 38px "Inter", "PingFang SC", sans-serif'
-      ctx.fillText(c.title, x + 44, y + 145)
-
-      ctx.fillStyle = 'rgba(255,255,255,0.62)'
-      ctx.font = '400 25px "Inter", "PingFang SC", sans-serif'
-      ctx.fillText(c.d1, x + 44, y + 235)
-      ctx.fillText(c.d2, x + 44, y + 282)
-    })
-
-    // 底部内测招募大横幅
-    const bX = 110
-    const bY = 1285
-    const bW = W - 220
-    const bH = 155
-    drawRoundRect(ctx, bX, bY, bW, bH, 36)
+    drawRoundRect(ctx, cardX + cardW - 245, cardY + 58, 178, 52, 26)
     ctx.fillStyle = 'rgba(255,255,255,0.08)'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.24)'
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)'
+    ctx.lineWidth = 1.5
+    ctx.stroke()
+    ctx.textAlign = 'center'
+    ctx.fillStyle = '#e2c799'
+    ctx.font = '600 21px "JetBrains Mono", monospace'
+    ctx.fillText('NO. 001 / 100', cardX + cardW - 156, cardY + 91)
+
+    // 卡片中央蚀刻大字
+    ctx.textAlign = 'left'
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '300 74px "Outfit", "Inter", sans-serif'
+    ctx.fillText('FOUNDER EDITION', cardX + 68, cardY + 305)
+
+    ctx.fillStyle = 'rgba(255,255,255,0.58)'
+    ctx.font = '400 26px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('首批 100 位创始内测官  ·  永久解锁全部高定材质与实景水印', cardX + 68, cardY + 365)
+
+    // 卡片底部一客一码蚀刻序列号
+    ctx.strokeStyle = 'rgba(255,255,255,0.09)'
+    ctx.beginPath()
+    ctx.moveTo(cardX + 68, cardY + 445)
+    ctx.lineTo(cardX + cardW - 68, cardY + 445)
     ctx.stroke()
 
-    ctx.textAlign = 'center'
-    ctx.fillStyle = '#ffffff'
-    ctx.font = '700 34px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('🎁 首批 100 位「创始内测官」限时免费招募中（原价 ¥18 终身买断）', W / 2, bY + 66)
-    ctx.fillStyle = 'rgba(255,255,255,0.68)'
-    ctx.font = '400 26px "Inter", "PingFang SC", sans-serif'
-    ctx.fillText('评论区留言获取独享一客一码 · 解锁海报专属「FOUNDER EDITION」激光刻印', W / 2, bY + 116)
-  }
+    ctx.textAlign = 'left'
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'
+    ctx.font = '500 21px "JetBrains Mono", monospace'
+    ctx.fillText('PASS KEY   VELO - 8F3A - 9K2M', cardX + 68, cardY + 510)
 
-  // 底部统一品牌落款
-  ctx.textAlign = 'center'
-  ctx.fillStyle = 'rgba(255,255,255,0.38)'
-  ctx.font = '500 23px "JetBrains Mono", "Inter", sans-serif'
-  ctx.fillText('● VELOCITY INSTRUMENT   ·   REAL-TIME GPS SPEEDOMETER & ALTIMETER', W / 2, 1575)
+    ctx.textAlign = 'right'
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '500 21px "Inter", "PingFang SC", sans-serif'
+    ctx.fillText('评论区留言获取专属内测码', cardX + cardW - 68, cardY + 510)
+
+    // 卡片下方极简四项能力标签 (一行排开，克制留白)
+    const pills = ['万米离线直测', '实景相册水印', '钛金与暖砂材质', '48 句走心旁白']
+    const pillW = 212
+    const pillGap = 24
+    const totalPillW = pills.length * pillW + (pills.length - 1) * pillGap
+    const startPillX = (W - totalPillW) / 2
+
+    pills.forEach((p, idx) => {
+      const px = startPillX + idx * (pillW + pillGap)
+      const py = cardY + cardH + 110
+      drawRoundRect(ctx, px, py, pillW, 64, 32)
+      ctx.fillStyle = 'rgba(255,255,255,0.04)'
+      ctx.fill()
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)'
+      ctx.lineWidth = 1.5
+      ctx.stroke()
+
+      ctx.textAlign = 'center'
+      ctx.fillStyle = 'rgba(255,255,255,0.82)'
+      ctx.font = '500 23px "Inter", "PingFang SC", sans-serif'
+      ctx.fillText(p, px + pillW / 2, py + 40)
+    })
+  }
 
   return canvas.toDataURL('image/png')
 }
@@ -658,7 +927,7 @@ function downloadCurrentSlide() {
   playTactileTick(true)
   const url = previewDataUrl.value || renderSlideToDataUrl(activeSlide.value)
   const link = document.createElement('a')
-  link.download = `Velocity_Promo_P${activeSlide.value + 1}.png`
+  link.download = `Velocity_Gallery_0${activeSlide.value + 1}.png`
   link.href = url
   link.click()
 }
@@ -673,7 +942,7 @@ async function downloadAllSlides() {
       const url = renderSlideToDataUrl(i)
       previewDataUrl.value = url
       const link = document.createElement('a')
-      link.download = `Velocity_Promo_P${i + 1}.png`
+      link.download = `Velocity_Gallery_0${i + 1}.png`
       link.href = url
       link.click()
       await new Promise((r) => setTimeout(r, 380))
@@ -686,7 +955,7 @@ async function downloadAllSlides() {
 async function copyPostCopywriting() {
   playTactileTick(true)
   try {
-    await navigator.clipboard.writeText(xhsCopywriting)
+    await navigator.clipboard.writeText(activeCopywriting.value)
     copiedText.value = true
     setTimeout(() => {
       copiedText.value = false

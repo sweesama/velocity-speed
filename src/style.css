@@ -147,10 +147,17 @@
   .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px); }
 }
 
-/* 针对小屏手机 (iPhone SE / 13 mini / 紧凑型安卓屏 < 700px 高度) 的自适应紧凑缩放 */
+/* 针对小屏手机 (iPhone SE / 13 mini / 紧凑型安卓屏 < 700px 高度) 与车载横屏模式 (< 520px 高度) 的自适应缩放 */
 @media (max-height: 700px) {
   .compact-scale-numeral {
-    transform: scale(0.88);
+    transform: scale(0.86);
+    transform-origin: center center;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .compact-scale-numeral {
+    transform: scale(0.66);
     transform-origin: center center;
   }
 }
