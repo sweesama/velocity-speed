@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Privacy Policy · 隐私政策 — Velocity</title>
+    <meta name="description" content="Velocity Privacy Policy: 100% on-device GPS speed & altitude processing, zero server uploads, zero tracking." />
+    <link rel="icon" type="image/svg+xml" href="/flight-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #000000;
+        --card-top: rgba(24, 24, 28, 0.92);
+        --card-bot: rgba(12, 12, 16, 0.96);
+        --border: rgba(255, 255, 255, 0.09);
+        --border-strong: rgba(255, 255, 255, 0.16);
+        --text: #f5f5f7;
+        --muted: #a1a1aa;
+        --dim: #71717a;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.7;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .ambient {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.055) 0%, transparent 62%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 20px 64px;
+      }
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 32px;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid var(--border);
+        color: var(--text);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        cursor: pointer;
+      }
+      .pill:hover {
+        background: rgba(255, 255, 255, 0.11);
+        border-color: var(--border-strong);
+      }
+      .pill:active { transform: scale(0.97); }
+      .pill.active {
+        background: #ffffff;
+        color: #000000;
+        border-color: #ffffff;
+        font-weight: 600;
+      }
+      .hero { margin-bottom: 28px; }
+      .eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-family: 'Outfit', 'Inter', 'PingFang SC', sans-serif;
+        font-size: clamp(28px, 5vw, 38px);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
+        margin-bottom: 12px;
+      }
+      .meta-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .card {
+        background: linear-gradient(180deg, var(--card-top) 0%, var(--card-bot) 100%);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 22px 24px;
+        margin-bottom: 16px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .card.highlight {
+        border-color: var(--border-strong);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0%, rgba(16, 16, 20, 0.96) 100%);
+      }
+      .sec-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .sec-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--dim);
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: -0.01em;
+      }
+      p {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      p + p { margin-top: 8px; }
+      ul {
+        margin-top: 10px;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
+      li + li { margin-top: 6px; }
+      strong { color: #ffffff; font-weight: 500; }
+      a.inline {
+        color: #ffffff;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .footer {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--dim);
+      }
+      .footer-links {
+        display: flex;
+        gap: 16px;
+      }
+      .footer-links a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .footer-links a:hover { color: #ffffff; }
+      [data-lang="en"] { display: none; }
+      html.lang-en [data-lang="zh"] { display: none; }
+      html.lang-en [data-lang="en"] { display: block; }
+      html.lang-en span[data-lang="en"], html.lang-en a[data-lang="en"] { display: inline-flex; }
+      span[data-lang="zh"], a[data-lang="zh"] { display: inline-flex; }
+    </style>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="container">
+      <header class="topbar">
+        <div class="nav-left">
+          <a href="/" class="pill">
+            <span>←</span>
+            <span data-lang="zh">返回测速仪</span>
+            <span data-lang="en">Back to App</span>
+          </a>
+          <a href="/privacy.html" class="pill active">
+            <span data-lang="zh">隐私政策</span>
+            <span data-lang="en">Privacy</span>
+          </a>
+          <a href="/support.html" class="pill">
+            <span data-lang="zh">技术支持</span>
+            <span data-lang="en">Support</span>
+          </a>
+          <a href="/beta.html" class="pill">
+            <span data-lang="zh">内测登记</span>
+            <span data-lang="en">Beta</span>
+          </a>
+        </div>
+        <button type="button" class="pill" onclick="toggleLang()">
+          <span style="font-family: 'JetBrains Mono', monospace;">中文 / EN</span>
+        </button>
+      </header>
+
+      <section class="hero">
+        <div class="eyebrow">● VELOCITY · PRIVACY ARCHITECTURE</div>
+        <h1 data-lang="zh">隐私政策与离线数据承诺</h1>
+        <h1 data-lang="en">Privacy Policy & On-Device Commitment</h1>
+        <div class="meta-bar">
+          <span>EFFECTIVE: 2026-11-24</span>
+          <span>URL: https://velocitygps.dev</span>
+          <span>CONTACT: sweeyeah@gmail.com</span>
+        </div>
+      </section>
+
+      <!-- 01 -->
+      <article class="card highlight">
+        <div class="sec-header">
+          <span class="sec-num">01</span>
+          <h2 data-lang="zh">核心原则：100% 本地计算，零服务器上传</h2>
+          <h2 data-lang="en">Core Principle: 100% On-Device Processing, Zero Server Uploads</h2>
+        </div>
+        <p data-lang="zh">
+          <strong>Velocity</strong>（由独立开发者运营，官方网站 <strong>https://velocitygps.dev</strong>）是一款纯本地实时 GPS 测速、几何海拔与前挡玻璃 HUD 仪器。我们不设任何账户系统、不要求手机号或邮箱登录，也<strong>不会向任何远程服务器上传、存储或出售您的实时位置、移动轨迹、海拔高度或照片内容</strong>。
+        </p>
+        <p data-lang="en">
+          <strong>Velocity</strong> (operated at <strong>https://velocitygps.dev</strong>) is a strictly on-device GPS speedometer, geometric altimeter, and windshield HUD instrument. We do not operate user accounts, do not require sign-in, and <strong>never upload, store, sell, or share your live location, travel routes, altitude, or imported photos to any remote server</strong>.
+        </p>
+      </article>
+
+      <!-- 02 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">02</span>
+          <h2 data-lang="zh">位置与卫星定位数据（GPS / Geolocation）</h2>
+          <h2 data-lang="en">Location & Satellite Telemetry (GPS / CoreLocation / Geolocation)</h2>
+        </div>
+        <p data-lang="zh">
+          仅当您在使用期间明确授予位置权限（“使用 App 期间允许”或浏览器定位权限）后，Velocity 才会读取设备芯片输出的多普勒速度、WGS84 空间几何海拔、航向角与经纬度。
+        </p>
+        <p data-lang="en">
+          Only when you grant location permission while using the app will Velocity read your device's hardware Doppler speed, WGS84 geometric altitude, heading, and coordinates.
+        </p>
+        <ul data-lang="zh">
+          <li><strong>实时本地解算：</strong>所有速度平滑滤波、累计里程与最高速度记录仅在您的设备内存中实时计算，关闭会话后不留存任何云端轨迹。</li>
+          <li><strong>支持飞行模式：</strong>卫星接收为被动式本地硬件信号读取，断网及开启飞行模式时仍完全在本地工作。</li>
+        </ul>
+        <ul data-lang="en">
+          <li><strong>Local memory only:</strong> Kalman smoothing, trip distance, and peak speed are calculated solely in your device's local memory and never transmitted externally.</li>
+          <li><strong>Offline by design:</strong> Satellite reception is passive and works offline or in Airplane Mode without transmitting data.</li>
+        </ul>
+      </article>
+
+      <!-- 03 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">03</span>
+          <h2 data-lang="zh">运动与加速度传感器（IMU / DeviceMotion）</h2>
+          <h2 data-lang="en">Motion & Accelerometer Sensors (CoreMotion / DeviceMotion)</h2>
+        </div>
+        <p data-lang="zh">
+          当您在仪表盘或设置页主动激活“推背感传感器”时，系统仅在本地读取设备线性加速度传感器以实时估算纵向 G 值及加速计时。该传感器数据不会持久化写入云端或共享给第三方。
+        </p>
+        <p data-lang="en">
+          When you explicitly activate the G-Force sensor, Velocity reads local device motion/accelerometer data solely to render live forward acceleration (G-force) on screen. Motion sensor readings are never persisted externally or shared with third parties.
+        </p>
+      </article>
+
+      <!-- 04 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">04</span>
+          <h2 data-lang="zh">相册与实景照片水印（Photos / File Input）</h2>
+          <h2 data-lang="en">Photos & Watermark Studio</h2>
+        </div>
+        <p data-lang="zh">
+          当您在“速度证书”页主动选择一张本地照片作为背景合拍测速海报时，该图片仅通过浏览器/设备本地 <strong>HTML5 Canvas</strong> 在内存中进行图文合成与导出保存。<strong>您的照片绝不会离开您的手机或上传到任何服务器</strong>。
+        </p>
+        <p data-lang="en">
+          When you choose a photo from your library inside Speed Card Studio, the image is composited locally on your device using HTML5 Canvas strictly to export your poster image. <strong>Your photos never leave your device</strong>.
+        </p>
+      </article>
+
+      <!-- 05 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">05</span>
+          <h2 data-lang="zh">本地存储与您的控制权（Local Storage）</h2>
+          <h2 data-lang="en">On-Device Storage & Data Deletion Control</h2>
+        </div>
+        <p data-lang="zh">
+          您的界面语言、速度单位（km/h、mph、kt、m/s）、海拔单位、HUD 偏好、当前测速记录摘要及离线 Pro 激活状态，均仅保存在您设备本地存储（<code>localStorage</code>）与 Service Worker 离线缓存中。您可以随时在应用内点击「清零当前测速记录」、撤销系统定位权限，或通过清除网站数据 / 卸载应用彻底删除所有本地数据。
+        </p>
+        <p data-lang="en">
+          Your language choice, unit preferences, HUD mirror settings, session summaries, and offline Pro pass state are stored strictly on-device via local storage and Service Worker offline caches. You can delete all local data anytime by tapping "Reset Current Session", revoking permissions, or clearing site/app data.
+        </p>
+      </article>
+
+      <!-- 06 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">06</span>
+          <h2 data-lang="zh">第三方服务与零广告追踪</h2>
+          <h2 data-lang="en">Third-Party Services & Zero Ad Tracking</h2>
+        </div>
+        <p data-lang="zh">
+          Velocity <strong>未集成任何广告 SDK、跨应用追踪标识符（IDFA / AAID）或行为画像 SDK</strong>。网页版通过 Cloudflare 全球边缘网络分发静态资源，可能采用无 Cookie 的匿名聚合访问统计（如页面总体浏览量与地区分布）以评估站点可用性，不包含任何可识别个人身份的信息（PII）。
+        </p>
+        <p data-lang="en">
+          Velocity integrates <strong>zero ad networks, zero cross-app tracking identifiers (IDFA/AAID), and zero personal profiling SDKs</strong>. Static assets are served via Cloudflare Pages edge infrastructure, which may record privacy-preserving, cookie-free aggregate traffic metrics without personally identifiable information.
+        </p>
+      </article>
+
+      <!-- 07 -->
+      <article class="card">
+        <div class="sec-header">
+          <span class="sec-num">07</span>
+          <h2 data-lang="zh">儿童隐私与联系我们</h2>
+          <h2 data-lang="en">Children's Privacy & Contact</h2>
+        </div>
+        <p data-lang="zh">
+          Velocity 为面向大众用户的通用仪表工具，不主动面向 13 周岁以下儿童收集任何个人信息。如您对本隐私政策或权限使用有任何疑问，欢迎随时通过电子邮件联系开发者：<a class="inline" href="mailto:sweeyeah@gmail.com">sweeyeah@gmail.com</a>。
+        </p>
+        <p data-lang="en">
+          Velocity is a general-audience utility instrument and does not knowingly collect personal information from children under 13. If you have any privacy questions, please contact the developer at <a class="inline" href="mailto:sweeyeah@gmail.com">sweeyeah@gmail.com</a>.
+        </p>
+      </article>
+
+      <footer class="footer">
+        <span>● VELOCITY · https://velocitygps.dev</span>
+        <div class="footer-links">
+          <a href="/">App</a>
+          <a href="/support.html">Support</a>
+          <a href="/beta.html">Beta</a>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      function applyLang(lang) {
+        document.documentElement.classList.toggle('lang-en', lang === 'en');
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+        try { localStorage.setItem('velocity_legal_lang', lang); } catch (e) {}
+      }
+      function toggleLang() {
+        var next = document.documentElement.classList.contains('lang-en') ? 'zh' : 'en';
+        applyLang(next);
+      }
+      (function init() {
+        var params = new URLSearchParams(window.location.search);
+        var q = params.get('lang');
+        var saved = null;
+        try { saved = localStorage.getItem('velocity_legal_lang'); } catch (e) {}
+        var def = (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+        applyLang(q === 'en' || q === 'zh' ? q : (saved || def));
+      })();
+    </script>
+  </body>
+</html>

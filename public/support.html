@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Support · 技术支持 — Velocity</title>
+    <meta name="description" content="Velocity Support & User Guide: Airplane Mode GPS tips, Windshield HUD setup, PWA offline installation, and developer contact." />
+    <link rel="icon" type="image/svg+xml" href="/flight-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #000000;
+        --card-top: rgba(24, 24, 28, 0.92);
+        --card-bot: rgba(12, 12, 16, 0.96);
+        --border: rgba(255, 255, 255, 0.09);
+        --border-strong: rgba(255, 255, 255, 0.16);
+        --text: #f5f5f7;
+        --muted: #a1a1aa;
+        --dim: #71717a;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.7;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .ambient {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.055) 0%, transparent 62%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 20px 64px;
+      }
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 32px;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid var(--border);
+        color: var(--text);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        cursor: pointer;
+      }
+      .pill:hover {
+        background: rgba(255, 255, 255, 0.11);
+        border-color: var(--border-strong);
+      }
+      .pill:active { transform: scale(0.97); }
+      .pill.active {
+        background: #ffffff;
+        color: #000000;
+        border-color: #ffffff;
+        font-weight: 600;
+      }
+      .eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-family: 'Outfit', 'Inter', 'PingFang SC', sans-serif;
+        font-size: clamp(28px, 5vw, 38px);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      @media (max-width: 600px) {
+        .grid-2 { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: linear-gradient(180deg, var(--card-top) 0%, var(--card-bot) 100%);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 20px 22px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .card-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10.5px;
+        color: var(--dim);
+        letter-spacing: 0.12em;
+        margin-bottom: 6px;
+      }
+      .card h2 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 6px;
+      }
+      .card p {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+      .sec-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin: 26px 0 12px;
+      }
+      details {
+        background: linear-gradient(180deg, var(--card-top) 0%, var(--card-bot) 100%);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      summary {
+        list-style: none;
+        padding: 16px 20px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      summary::-webkit-details-marker { display: none; }
+      summary::after {
+        content: "+";
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 16px;
+        color: var(--muted);
+        transition: transform 0.2s ease;
+      }
+      details[open] summary::after {
+        content: "×";
+        color: #ffffff;
+      }
+      .faq-body {
+        padding: 0 20px 18px;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.7;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 14px;
+      }
+      .cta-box {
+        margin-top: 24px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 15, 19, 0.96) 100%);
+        border: 1px solid var(--border-strong);
+        border-radius: 24px;
+        padding: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #000000;
+        font-size: 12.5px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.15s ease, background 0.2s ease;
+      }
+      .btn-primary:hover { background: #e4e4e7; }
+      .btn-primary:active { transform: scale(0.97); }
+      .footer {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--dim);
+      }
+      .footer-links { display: flex; gap: 16px; }
+      .footer-links a { color: var(--muted); text-decoration: none; }
+      .footer-links a:hover { color: #ffffff; }
+      [data-lang="en"] { display: none; }
+      html.lang-en [data-lang="zh"] { display: none; }
+      html.lang-en [data-lang="en"] { display: block; }
+      html.lang-en span[data-lang="en"], html.lang-en a[data-lang="en"] { display: inline-flex; }
+      span[data-lang="zh"], a[data-lang="zh"] { display: inline-flex; }
+    </style>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="container">
+      <header class="topbar">
+        <div class="nav-left">
+          <a href="/" class="pill">
+            <span>←</span>
+            <span data-lang="zh">返回测速仪</span>
+            <span data-lang="en">Back to App</span>
+          </a>
+          <a href="/privacy.html" class="pill">
+            <span data-lang="zh">隐私政策</span>
+            <span data-lang="en">Privacy</span>
+          </a>
+          <a href="/support.html" class="pill active">
+            <span data-lang="zh">技术支持</span>
+            <span data-lang="en">Support</span>
+          </a>
+          <a href="/beta.html" class="pill">
+            <span data-lang="zh">内测登记</span>
+            <span data-lang="en">Beta</span>
+          </a>
+        </div>
+        <button type="button" class="pill" onclick="toggleLang()">
+          <span style="font-family: 'JetBrains Mono', monospace;">中文 / EN</span>
+        </button>
+      </header>
+
+      <div class="eyebrow">● VELOCITY · INSTRUMENT SUPPORT</div>
+      <h1 data-lang="zh">使用指南与技术支持</h1>
+      <h1 data-lang="en">User Guide & Technical Support</h1>
+      <p class="subtitle" data-lang="zh">全场景实测技巧、离线桌面版安装与问题反馈通道</p>
+      <p class="subtitle" data-lang="en">Field tips for flights & rail, offline home-screen setup, and direct developer contact.</p>
+
+      <div class="sec-label" data-lang="zh">QUICK START · 四大核心场景</div>
+      <div class="sec-label" data-lang="en">QUICK START · KEY MODES</div>
+
+      <section class="grid-2">
+        <div class="card">
+          <div class="card-num">01 · AVIATION</div>
+          <h2 data-lang="zh">万米高空飞行模式直测</h2>
+          <h2 data-lang="en">Airplane Mode Cabin Reception</h2>
+          <p data-lang="zh">
+            客机金属机身会屏蔽卫星波段。请在飞行模式下将手机贴近舷窗玻璃停留 10–30 秒，即可稳定锁定巡航速度与真实几何海拔。
+          </p>
+          <p data-lang="en">
+            Commercial fuselages shield GPS signals. Hold your phone directly against the cabin window glass for 10–30 seconds in Airplane Mode to lock ground speed and true altitude.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-num">02 · RAIL & ROAD</div>
+          <h2 data-lang="zh">高铁、驾车与静止防漂移</h2>
+          <h2 data-lang="en">High-Speed Rail & Road Trips</h2>
+          <p data-lang="zh">
+            系统内置卡尔曼滤波与静止门限，等待静止时不空转计时；检测到有效移动后自动启动行程统计，支持 km/h、mph、kt 与 m/s 一键切换。
+          </p>
+          <p data-lang="en">
+            Kalman smoothing eliminates stationary drift and pauses duration automatically when stopped. Tap the speed unit anytime to cycle km/h, mph, kt, and m/s.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-num">03 · OPTICAL HUD</div>
+          <h2 data-lang="zh">夜间前挡风玻璃投影</h2>
+          <h2 data-lang="en">Windshield Optical HUD</h2>
+          <p data-lang="zh">
+            点击主屏右上角 HUD 进入纯黑镜像投影模式，提供光学白、钛金属与香槟金三档色温。平放于仪表台，挡风玻璃即可反射出正向数字。
+          </p>
+          <p data-lang="en">
+            Tap HUD in the top right for high-contrast mirrored projection in White, Titanium, or Champagne tones. Lay the phone flat under the windshield at night.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-num">04 · OFFLINE PWA</div>
+          <h2 data-lang="zh">添加到桌面 · 断网秒开</h2>
+          <h2 data-lang="en">Install as Offline Web App</h2>
+          <p data-lang="zh">
+            iPhone 用户可在 Safari 点击底部「分享」›「添加到主屏幕」；Android Chrome 可点击右上角菜单「安装应用」，从此支持全屏无边框与断网打开。
+          </p>
+          <p data-lang="en">
+            On iOS Safari tap Share › Add to Home Screen. On Android Chrome tap Menu › Install App for a full-screen, offline-ready experience.
+          </p>
+        </div>
+      </section>
+
+      <div class="sec-label">FAQ · 常见问题排查</div>
+
+      <details open>
+        <summary>
+          <span data-lang="zh">为什么提示“未开启定位”或速度一直显示 0？</span>
+          <span data-lang="en">Why does it show "No Access" or stay at 0?</span>
+        </summary>
+        <div class="faq-body">
+          <p data-lang="zh">
+            1. <strong>iPhone / iPad</strong>：前往「设置 › 隐私与安全性 › 定位服务」，确认总开关开启，并允许 Safari 浏览器（或 Velocity App）“使用 App 期间访问位置”并开启“精确位置”。<br />
+            2. <strong>安卓 / 微信浏览器</strong>：确保系统定位开关已开启，并在浏览器地址栏左侧图标处允许访问位置；在室内水泥墙环境下请靠近窗户或移至室外开阔处。
+          </p>
+          <p data-lang="en">
+            1. <strong>iOS</strong>: Open Settings › Privacy & Security › Location Services and set access to "While Using" with Precise Location enabled.<br />
+            2. <strong>Android / Desktop</strong>: Enable device GPS and click the site icon left of the URL bar to allow Location. Indoors, move near a window or outdoors.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span data-lang="zh">手机微信或 Safari 点击保存海报后找不到图片怎么办？</span>
+          <span data-lang="en">How do I save Speed Card posters on iPhone or WeChat?</span>
+        </summary>
+        <div class="faq-body">
+          <p data-lang="zh">
+            点击证书页右上角「↓ 保存」后，系统会直接弹出高清海报大图。手机用户请直接<strong>长按画面上的海报图片</strong>，选择「存储到“照片”」或「保存图片」，也可直接点击下方「调用系统分享」。
+          </p>
+          <p data-lang="en">
+            After tapping Save, a high-resolution image sheet opens automatically. On mobile, <strong>long-press the poster</strong> to save directly to Photos, or tap Share Image.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span data-lang="zh">如何获得或兑换「FOUNDER 创始内测码」？</span>
+          <span data-lang="en">How do I redeem a Founding Beta Invite Code?</span>
+        </summary>
+        <div class="faq-body">
+          <p data-lang="zh">
+            前往 <a class="inline" href="/beta.html">内测登记页</a> 提交你的邮箱或参与小红书首发帖互动，即可获赠独享的 <code>VELO-XXXX-XXXX</code> 一客一码序列号，用于在设置页或证书页永久解锁「钛金/暖砂材质」与「实景照片水印」。
+          </p>
+          <p data-lang="en">
+            Visit the <a class="inline" href="/beta.html">Beta Registration page</a> to submit your email for Google Play Closed Testing or TestFlight access and receive your personal <code>VELO-XXXX-XXXX</code> pass key.
+          </p>
+        </div>
+      </details>
+
+      <section class="cta-box">
+        <div>
+          <h2 style="font-size: 16px; margin-bottom: 4px;" data-lang="zh">联系开发者 · 反馈 Bug 或提出功能建议</h2>
+          <h2 style="font-size: 16px; margin-bottom: 4px;" data-lang="en">Contact Developer · Feedback & Support</h2>
+          <p style="font-size: 12.5px; color: var(--muted);" data-lang="zh">
+            欢迎邮件联系 sweeyeah@gmail.com，或在 GitHub 提交 Issue，也可加入商店内测。
+          </p>
+          <p style="font-size: 12.5px; color: var(--muted);" data-lang="en">
+            Email sweeyeah@gmail.com directly, file a GitHub issue, or join our closed store beta.
+          </p>
+        </div>
+        <div class="btn-row">
+          <a class="btn-primary" href="mailto:sweeyeah@gmail.com?subject=Velocity%20Support%20%2F%20Feedback">
+            <span data-lang="zh">发送邮件</span>
+            <span data-lang="en">Email Support</span>
+          </a>
+          <a class="pill" href="https://github.com/sweesama/velocity-speed/issues" target="_blank" rel="noopener">
+            <span>GitHub Issues</span>
+          </a>
+          <a class="pill" href="/beta.html">
+            <span data-lang="zh">参加内测 →</span>
+            <span data-lang="en">Join Beta →</span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>● VELOCITY · https://velocitygps.dev</span>
+        <div class="footer-links">
+          <a href="/">App</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/beta.html">Beta</a>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      function applyLang(lang) {
+        document.documentElement.classList.toggle('lang-en', lang === 'en');
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+        try { localStorage.setItem('velocity_legal_lang', lang); } catch (e) {}
+      }
+      function toggleLang() {
+        var next = document.documentElement.classList.contains('lang-en') ? 'zh' : 'en';
+        applyLang(next);
+      }
+      (function init() {
+        var params = new URLSearchParams(window.location.search);
+        var q = params.get('lang');
+        var saved = null;
+        try { saved = localStorage.getItem('velocity_legal_lang'); } catch (e) {}
+        var def = (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+        applyLang(q === 'en' || q === 'zh' ? q : (saved || def));
+      })();
+    </script>
+  </body>
+</html>

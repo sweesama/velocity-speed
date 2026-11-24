@@ -474,6 +474,36 @@
         </span>
       </button>
     </div>
+
+    <!-- 底部商店合规隐私政策、技术支持与内测登记入口 -->
+    <div class="pt-3 pb-2 flex items-center justify-center space-x-3 text-[11px] text-zinc-500 shrink-0">
+      <a
+        href="/privacy.html"
+        target="_blank"
+        rel="noopener"
+        class="hover:text-zinc-300 transition whitespace-nowrap"
+      >
+        {{ settings.language === 'en' ? 'Privacy' : '隐私政策' }}
+      </a>
+      <span class="text-white/15">·</span>
+      <a
+        href="/support.html"
+        target="_blank"
+        rel="noopener"
+        class="hover:text-zinc-300 transition whitespace-nowrap"
+      >
+        {{ settings.language === 'en' ? 'Support' : '技术支持' }}
+      </a>
+      <span class="text-white/15">·</span>
+      <a
+        href="/beta.html"
+        target="_blank"
+        rel="noopener"
+        class="hover:text-zinc-300 transition whitespace-nowrap"
+      >
+        {{ settings.language === 'en' ? 'Beta' : '内测登记' }}
+      </a>
+    </div>
   </div>
 </template>
 

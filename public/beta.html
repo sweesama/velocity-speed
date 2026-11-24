@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Founding Beta · 创始内测官登记 — Velocity</title>
+    <meta name="description" content="Join Velocity Founding Beta for Google Play 14-day closed testing and iOS TestFlight. Unlock lifetime Founder Edition perks." />
+    <link rel="icon" type="image/svg+xml" href="/flight-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #000000;
+        --card-top: rgba(24, 24, 28, 0.92);
+        --card-bot: rgba(12, 12, 16, 0.96);
+        --border: rgba(255, 255, 255, 0.09);
+        --border-strong: rgba(255, 255, 255, 0.18);
+        --text: #f5f5f7;
+        --muted: #a1a1aa;
+        --dim: #71717a;
+        --gold: #e2c799;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.7;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .ambient {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 62%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 20px 64px;
+      }
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 32px;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid var(--border);
+        color: var(--text);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        cursor: pointer;
+      }
+      .pill:hover {
+        background: rgba(255, 255, 255, 0.11);
+        border-color: var(--border-strong);
+      }
+      .pill:active { transform: scale(0.97); }
+      .pill.active {
+        background: #ffffff;
+        color: #000000;
+        border-color: #ffffff;
+        font-weight: 600;
+      }
+      .hero-card {
+        background: linear-gradient(135deg, rgba(35, 36, 42, 0.94) 0%, rgba(15, 15, 19, 0.97) 55%, rgba(22, 20, 18, 0.96) 100%);
+        border: 1px solid var(--border-strong);
+        border-radius: 26px;
+        padding: 28px 26px;
+        margin-bottom: 20px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 48px rgba(0, 0, 0, 0.55);
+      }
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .founder-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--gold);
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(226, 199, 153, 0.08);
+        border: 1px solid rgba(226, 199, 153, 0.25);
+      }
+      h1 {
+        font-family: 'Outfit', 'Inter', 'PingFang SC', sans-serif;
+        font-size: clamp(26px, 5vw, 34px);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.22;
+        margin-bottom: 10px;
+      }
+      .lead {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 620px) {
+        .grid-2 { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: linear-gradient(180deg, var(--card-top) 0%, var(--card-bot) 100%);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 22px 24px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .track-eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .card h2 {
+        font-size: 15.5px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 10px;
+      }
+      .steps {
+        list-style: none;
+        font-size: 12.8px;
+        color: var(--muted);
+      }
+      .steps li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .steps .n {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        padding: 1px 6px;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .form-card {
+        background: linear-gradient(180deg, rgba(28, 28, 33, 0.94) 0%, rgba(14, 14, 18, 0.98) 100%);
+        border: 1px solid var(--border-strong);
+        border-radius: 24px;
+        padding: 24px;
+      }
+      .field { margin-bottom: 16px; }
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #d4d4d8;
+        margin-bottom: 8px;
+      }
+      .seg-group {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      @media (max-width: 520px) {
+        .seg-group { grid-template-columns: 1fr; }
+      }
+      .seg-btn {
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.45);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        text-align: center;
+      }
+      .seg-btn:hover { border-color: var(--border-strong); color: #ffffff; }
+      .seg-btn.active {
+        background: #ffffff;
+        color: #000000;
+        border-color: #ffffff;
+        font-weight: 600;
+      }
+      input.input-box {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: #ffffff;
+        font-size: 13.5px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+      input.input-box:focus { border-color: rgba(255, 255, 255, 0.48); }
+      input.input-box::placeholder { color: #52525b; }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .btn-primary {
+        flex: 1 1 220px;
+        padding: 12px 18px;
+        border-radius: 14px;
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.2s ease;
+      }
+      .btn-primary:hover { background: #e4e4e7; }
+      .btn-primary:active { transform: scale(0.98); }
+      .btn-secondary {
+        flex: 1 1 220px;
+        padding: 12px 18px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.2s ease;
+      }
+      .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+      .btn-secondary:active { transform: scale(0.98); }
+      .status-msg {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--gold);
+        min-height: 18px;
+        text-align: center;
+      }
+      .footer {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--dim);
+      }
+      .footer-links { display: flex; gap: 16px; }
+      .footer-links a { color: var(--muted); text-decoration: none; }
+      .footer-links a:hover { color: #ffffff; }
+      [data-lang="en"] { display: none; }
+      html.lang-en [data-lang="zh"] { display: none; }
+      html.lang-en [data-lang="en"] { display: block; }
+      html.lang-en span[data-lang="en"], html.lang-en a[data-lang="en"], html.lang-en label[data-lang="en"] { display: inline-flex; }
+      html.lang-en .field label[data-lang="en"] { display: block; }
+      span[data-lang="zh"], a[data-lang="zh"] { display: inline-flex; }
+    </style>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="container">
+      <header class="topbar">
+        <div class="nav-left">
+          <a href="/" class="pill">
+            <span>←</span>
+            <span data-lang="zh">返回测速仪</span>
+            <span data-lang="en">Back to App</span>
+          </a>
+          <a href="/privacy.html" class="pill">
+            <span data-lang="zh">隐私政策</span>
+            <span data-lang="en">Privacy</span>
+          </a>
+          <a href="/support.html" class="pill">
+            <span data-lang="zh">技术支持</span>
+            <span data-lang="en">Support</span>
+          </a>
+          <a href="/beta.html" class="pill active">
+            <span data-lang="zh">内测登记</span>
+            <span data-lang="en">Beta</span>
+          </a>
+        </div>
+        <button type="button" class="pill" onclick="toggleLang()">
+          <span style="font-family: 'JetBrains Mono', monospace;">中文 / EN</span>
+        </button>
+      </header>
+
+      <section class="hero-card">
+        <div class="badge-row">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);">● VELOCITY INSTRUMENT</span>
+          <span class="founder-tag">FOUNDER EDITION · NO. 001–100</span>
+        </div>
+        <h1 data-lang="zh">首批 100 席「创始内测官」与商店内测登记</h1>
+        <h1 data-lang="en">Founding Beta & App Store / Google Play Tester Program</h1>
+        <p class="lead" data-lang="zh">
+          完成 Google Play 14 天封闭测试或 iOS TestFlight 体验后，即可永久获赠价值 ¥18（$2.99）的 <strong>Velocity Pro 终身通行证</strong>（一客一码 + 海报专属 <strong>FOUNDER EDITION</strong> 激光刻印 + 实景相册水印 + 钛金/暖砂高定材质）。
+        </p>
+        <p class="lead" data-lang="en">
+          Join our 14-day Google Play Closed Test or iOS TestFlight beta to receive a lifetime <strong>Velocity Pro Pass Key</strong> ($2.99 value): unlocking Photo Watermark Studio, Titanium & Sand finishes, and the exclusive <strong>FOUNDER EDITION</strong> badge.
+        </p>
+      </section>
+
+      <section class="grid-2">
+        <article class="card">
+          <div class="track-eyebrow">TRACK A · ANDROID</div>
+          <h2 data-lang="zh">Google Play 14 天封闭测试</h2>
+          <h2 data-lang="en">Google Play 14-Day Closed Test</h2>
+          <ul class="steps" data-lang="zh">
+            <li><span class="n">01</span><span>在下方填写您的 <strong>Google 商店账号邮箱（Gmail）</strong>，提交或复制发送给开发者加入内测白名单。</span></li>
+            <li><span class="n">02</span><span>收到内测邀请链接后，在手机 Google Play 点击“参与测试并下载安装”。</span></li>
+            <li><span class="n">03</span><span>保持安装并偶尔打开实测满 <strong>14 天</strong>，即可获赠独享一客一码终身激活权。</span></li>
+          </ul>
+          <ul class="steps" data-lang="en">
+            <li><span class="n">01</span><span>Submit your <strong>Google Play Gmail address</strong> below to be added to the closed testing group.</span></li>
+            <li><span class="n">02</span><span>Open the opt-in link we send you and install Velocity from Google Play.</span></li>
+            <li><span class="n">03</span><span>Keep the app installed and active across <strong>14 days</strong> to receive your lifetime Founder key.</span></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="track-eyebrow">TRACK B · IOS & WEB</div>
+          <h2 data-lang="zh">iOS TestFlight & 离线桌面版</h2>
+          <h2 data-lang="en">iOS TestFlight & Offline Web App</h2>
+          <ul class="steps" data-lang="zh">
+            <li><span class="n">01</span><span>填写您的 <strong>Apple ID 邮箱</strong>，我们将在 TestFlight 审核开放后第一时间向您发送测试邀请。</span></li>
+            <li><span class="n">02</span><span>等待期间，现在即可在 Safari 打开 <strong>velocitygps.dev</strong> 并「添加到主屏幕」，断网飞行模式照样全屏测速。</span></li>
+            <li><span class="n">03</span><span>内测官在 iOS 商店上线后同样保留终身 Founding Pro 会员权益。</span></li>
+          </ul>
+          <ul class="steps" data-lang="en">
+            <li><span class="n">01</span><span>Submit your <strong>Apple ID email</strong> below to receive a TestFlight invitation as soon as builds go live.</span></li>
+            <li><span class="n">02</span><span>Meanwhile, install <strong>velocitygps.dev</strong> via Safari Share › Add to Home Screen for instant offline use.</span></li>
+            <li><span class="n">03</span><span>All Founding Beta testers retain lifetime Pro unlocks upon public App Store release.</span></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="form-card">
+        <div class="field">
+          <label data-lang="zh">1. 选择您要参与的内测平台</label>
+          <label data-lang="en">1. Choose Your Testing Platform</label>
+          <div class="seg-group">
+            <button type="button" class="seg-btn active" data-plat="Android (Google Play 14天内测)" onclick="selectPlat(this)">
+              Android · Google Play
+            </button>
+            <button type="button" class="seg-btn" data-plat="iOS (TestFlight)" onclick="selectPlat(this)">
+              iOS · TestFlight
+            </button>
+            <button type="button" class="seg-btn" data-plat="双端 (Android + iOS)" onclick="selectPlat(this)">
+              <span data-lang="zh">双端都要参加</span>
+              <span data-lang="en">Both Platforms</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="emailInput" data-lang="zh">2. 商店账号邮箱（安卓填 Gmail / 苹果填 Apple ID 邮箱）</label>
+          <label for="emailInput" data-lang="en">2. Store Account Email (Gmail for Google Play / Apple ID for TestFlight)</label>
+          <input id="emailInput" class="input-box" type="email" placeholder="example@gmail.com" />
+        </div>
+
+        <div class="field" style="margin-bottom: 0;">
+          <label for="noteInput" data-lang="zh">3. 您的小红书昵称或常用测速场景（选填，方便私信回码）</label>
+          <label for="noteInput" data-lang="en">3. Nickname or Use Case (optional, e.g. flights / cycling / night drive)</label>
+          <input id="noteInput" class="input-box" type="text" placeholder="如：小红书@阿明 · 周末坐飞机/夜驾测速" />
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-primary" onclick="sendBetaEmail()">
+            <span data-lang="zh">发送内测登记邮件 →</span>
+            <span data-lang="en">Send Registration Email →</span>
+          </button>
+          <button type="button" class="btn-secondary" onclick="copyBetaCard()">
+            <span data-lang="zh">一键复制登记信息（发小红书私信/群聊）</span>
+            <span data-lang="en">Copy Registration Info</span>
+          </button>
+        </div>
+
+        <div id="statusMsg" class="status-msg"></div>
+      </section>
+
+      <footer class="footer">
+        <span>● VELOCITY · https://velocitygps.dev</span>
+        <div class="footer-links">
+          <a href="/">App</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/support.html">Support</a>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      var selectedPlatform = 'Android (Google Play 14天内测)';
+      function applyLang(lang) {
+        document.documentElement.classList.toggle('lang-en', lang === 'en');
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+        try { localStorage.setItem('velocity_legal_lang', lang); } catch (e) {}
+      }
+      function toggleLang() {
+        var next = document.documentElement.classList.contains('lang-en') ? 'zh' : 'en';
+        applyLang(next);
+      }
+      function selectPlat(btn) {
+        var btns = document.querySelectorAll('.seg-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+        btn.classList.add('active');
+        selectedPlatform = btn.getAttribute('data-plat') || 'Android';
+      }
+      function getPayload() {
+        var email = (document.getElementById('emailInput').value || '').trim();
+        var note = (document.getElementById('noteInput').value || '').trim();
+        var isEn = document.documentElement.classList.contains('lang-en');
+        var msgEl = document.getElementById('statusMsg');
+        if (!email || email.indexOf('@') === -1) {
+          msgEl.textContent = isEn
+            ? 'Please enter a valid Gmail or Apple ID email address first.'
+            : '请先填写有效的 Gmail 或 Apple ID 邮箱地址。';
+          document.getElementById('emailInput').focus();
+          return null;
+        }
+        return {
+          email: email,
+          note: note || (isEn ? 'N/A' : '未填写'),
+          platform: selectedPlatform,
+          isEn: isEn
+        };
+      }
+      function sendBetaEmail() {
+        var data = getPayload();
+        if (!data) return;
+        var subject = encodeURIComponent('[Velocity Founding Beta] ' + data.platform + ' - ' + data.email);
+        var body = encodeURIComponent(
+          'Platform: ' + data.platform + '\n' +
+          'Store Account Email: ' + data.email + '\n' +
+          'Nickname / Note: ' + data.note + '\n\n' +
+          'Sent from https://velocitygps.dev/beta.html'
+        );
+        document.getElementById('statusMsg').textContent = data.isEn
+          ? 'Opening your mail app to send registration to sweeyeah@gmail.com...'
+          : '正在调起邮箱发送内测登记至 sweeyeah@gmail.com（也可点右侧复制发私信）';
+        window.location.href = 'mailto:sweeyeah@gmail.com?subject=' + subject + '&body=' + body;
+      }
+      function copyBetaCard() {
+        var data = getPayload();
+        if (!data) return;
+        var text =
+          '【Velocity 创始内测官登记】\n' +
+          '内测平台：' + data.platform + '\n' +
+          '商店邮箱：' + data.email + '\n' +
+          '备注信息：' + data.note;
+        var msgEl = document.getElementById('statusMsg');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            msgEl.textContent = data.isEn
+              ? 'Copied! Paste it in DM or comment to get your opt-in link & Founder key.'
+              : '已复制登记卡 ✓ 直接粘贴发给小红书博主或邮件至 sweeyeah@gmail.com 即可。';
+          }).catch(function () {
+            msgEl.textContent = text;
+          });
+        } else {
+          msgEl.textContent = text;
+        }
+      }
+      (function init() {
+        var params = new URLSearchParams(window.location.search);
+        var q = params.get('lang');
+        var saved = null;
+        try { saved = localStorage.getItem('velocity_legal_lang'); } catch (e) {}
+        var def = (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+        applyLang(q === 'en' || q === 'zh' ? q : (saved || def));
+      })();
+    </script>
+  </body>
+</html>
