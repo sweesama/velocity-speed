@@ -28,6 +28,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
+        navigateFallbackDenylist: [/^\/(privacy|support|beta)(\.html)?$/],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
