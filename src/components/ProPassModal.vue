@@ -264,7 +264,7 @@ function handleRedeem() {
 
 async function shareToUnlock() {
   playTactileTick(true)
-  const shareUrl = window.location.origin || 'https://velocity-speed.pages.dev'
+  const shareUrl = 'https://velocitygps.dev'
   const shareTitle = 'Velocity — 极简实时测速与万米高空海拔仪'
   const shareText =
     props.lang === 'en'

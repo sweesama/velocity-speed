@@ -177,7 +177,7 @@
         <!-- 底部极简时间戳与署名 -->
         <div class="flex items-center justify-between pt-3 text-[10px] text-white/35 font-mono">
           <span>{{ dateString }}</span>
-          <span class="tracking-widest uppercase">VELOCITY</span>
+          <span class="tracking-widest" :class="settings.isProUnlocked ? 'uppercase' : ''">{{ settings.isProUnlocked ? 'VELOCITY' : 'velocitygps.dev' }}</span>
         </div>
       </div>
     </div>
@@ -690,11 +690,7 @@ async function exportPoster() {
     ctx.fillText(dateString.value, 110, 1232)
 
     ctx.textAlign = 'right'
-    const footerRight = props.settings.isProUnlocked
-      ? 'VELOCITY'
-      : props.settings.language === 'en'
-        ? 'VELOCITY · LIVE GPS'
-        : 'VELOCITY · 实时测速仪'
+    const footerRight = props.settings.isProUnlocked ? 'VELOCITY' : 'velocitygps.dev'
     ctx.fillText(footerRight, width - 110, 1232)
 
     const dataUrl = canvas.toDataURL('image/png')
